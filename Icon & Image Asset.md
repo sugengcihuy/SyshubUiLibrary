@@ -1,0 +1,41 @@
+### Icon
+* Egg Icon = "rbxassetid://106070557495073"
+* Batu Icon = "rbxassetid://82488028040593"
+* PickAxe Icon = "rbxassetid://118395707292811"
+* Binatang Icon = "rbxassetid://135415406785593"
+* Pedang Icon = "rbxassetid://88232276422832"
+* Ikan Icon = "rbxassetid://140464235181887"
+* Tanaman Icon = "rbxassetid://73991152696434"
+* Naga Icon = "rbxassetid://139006753312271"
+* Violance District Icon = "rbxassetid://130144978696466"
+* Settings Icon = "rbxassetid://109119318751042"
+* About Icon = "rbxassetid://109670732793613"
+* Discord Icon = "rbxassetid://89655945612700"
+* Tiktok Icon = "rbxassetid://124527434158099"
+* Wa Icon = "rbxassetid://124898037420185"
+* Web Icon = "rbxassetid://83357882847538"
+* Player Icon = "rbxassetid://78108941818643"
+* GoTo Icon 1 = "rbxassetid://115911786914037"
+* GoTo Icon 2 = "rbxassetid://131656522154972"
+
+### Branding
+* Syshub Icon = "rbxassetid://73996941491460"
+* Minimize Icon = "rbxassetid://116139716819353"
+* SideMenu Header = "rbxassetid://102171457370701"
+
+### Control
+* Close Button = "rbxassetid://121177348326161"
+* Minimize Button = "rbxassetid://112145138181367"
+* Accordion Arrow = "rbxassetid://101774428037241"
+* Dropdown Arrow = "rbxassetid://132016203434518"
+* Plus Button = "rbxassetid://77098120677548"
+* Minus Button = "rbxassetid://100944850081529"
+* Key Icon = "rbxassetid://137132963533530"
+* Search Icon = "rbxassetid://2804603863"
+* Refresh Icon = "rbxassetid://93834424925446"
+
+### Setting
+* Save Icon = "rbxassetid://79791496315194"
+* Load Icon = "rbxassetid://114659130758967"
+* Config Icon = "rbxassetid://130594403641593"
+* Delete Icon = "rbxassetid://11768918600"
