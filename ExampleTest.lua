@@ -1,19 +1,5 @@
 -- Example Test
-local SyshubLib
-if game:GetService("ReplicatedStorage"):FindFirstChild("SyshubLib") then
-    SyshubLib = require(game:GetService("ReplicatedStorage").SyshubLib)
-else
-    local url = "https://raw.githubusercontent.com/sugengcihuy/SyshubUiLibrary/master/SyshubLib.lua"
-    local ok, result = pcall(function()
-        return loadstring(game:HttpGet(url, true))()
-    end)
-    if ok and result then
-        SyshubLib = result
-    else
-        error("[SyshubLib] Gagal load library: " .. tostring(result))
-    end
-end
-
+local SyshubLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/sugengcihuy/SyshubUiLibrary/master/SyshubLib.lua"))()
 -- Buat Window
 local win = SyshubLib:CreateWindow({
     Title = "Syshub Hub v3",
