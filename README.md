@@ -2,6 +2,10 @@
 
 **By Sugeng**
 
+## Example Testing
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/sugengcihuy/SyshubUiLibrary/master/SyshubLib.lua"))()
+
 ---
 
 ## Contoh Penggunaan
