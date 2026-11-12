@@ -4,7 +4,7 @@
 
 ## Example Testing
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/sugengcihuy/SyshubUiLibrary/master/SyshubLib.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/sugengcihuy/SyshubUiLibrary/refs/heads/master/ExampleTest.lua"))()
 
 
 ## Contoh Penggunaan
