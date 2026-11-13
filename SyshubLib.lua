@@ -409,6 +409,129 @@ function SyshubLib.BuildSaveModal(parent)
     return bgFrame, inputBox, confirmBtn, cancelBtn
 end
 
+-- Performance UI
+function SyshubLib.BuildPerformanceUI(parent)
+    local frame = Instance.new("Frame")
+    frame.Name = "Ping_FpsBgFrame"
+    frame.AnchorPoint = Vector2.new(0.5, 0)
+    frame.BackgroundColor3 = C_White
+    frame.BorderColor3 = C_Black
+    frame.BorderSizePixel = 0
+    frame.Position = UDim2.new(0.5, 0, 0.025, 0)
+    frame.Size = UDim2.new(0, 264, 0, 35)
+    frame.Visible = false
+    frame.ZIndex = 500
+
+    local corner = Instance.new("UICorner")
+    corner.Name = "UICorner"
+    corner.CornerRadius = UDim.new(1, 0)
+    corner.Parent = frame
+
+    local outerStroke = Instance.new("UIStroke")
+    outerStroke.Name = "UIStrokeOuter"
+    outerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+    outerStroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
+    outerStroke.Color = C_Black
+    outerStroke.Thickness = 2
+    outerStroke.ZIndex = 501
+    outerStroke.Parent = frame
+
+    local innerStroke = Instance.new("UIStroke")
+    innerStroke.Name = "UIStrokeInner"
+    innerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+    innerStroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+    innerStroke.Color = Color3.fromRGB(0, 170, 255)
+    innerStroke.Thickness = 1.5
+    innerStroke.ZIndex = 501
+    innerStroke.Parent = frame
+
+    local grad = Instance.new("UIGradient")
+    grad.Name = "UIGradient"
+    grad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 170, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 127))
+    })
+    grad.Rotation = 90
+    grad.Parent = frame
+
+    local sysIcon = Instance.new("ImageLabel")
+    sysIcon.Name = "SyshybIcon"
+    sysIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    sysIcon.BackgroundColor3 = C_White
+    sysIcon.BackgroundTransparency = 1
+    sysIcon.BorderSizePixel = 0
+    sysIcon.Image = "rbxassetid://73996941491460"
+    sysIcon.Position = UDim2.new(0.23390151560307, 0, 0.46104344725609, 0)
+    sysIcon.ScaleType = Enum.ScaleType.Fit
+    sysIcon.Size = UDim2.new(0, 124, 0, 51)
+    sysIcon.ZIndex = 502
+    sysIcon.Parent = frame
+
+    local pingIcon = Instance.new("ImageLabel")
+    pingIcon.Name = "PingIcon"
+    pingIcon.BackgroundColor3 = C_White
+    pingIcon.BackgroundTransparency = 1
+    pingIcon.BorderSizePixel = 0
+    pingIcon.Image = "rbxassetid://102854436110185"
+    pingIcon.Position = UDim2.new(0.40909090638161, 8, 0.073469325900078, 0)
+    pingIcon.ScaleType = Enum.ScaleType.Fit
+    pingIcon.Size = UDim2.new(0, 27, 0, 27)
+    pingIcon.ZIndex = 502
+    pingIcon.Parent = frame
+
+    local pingText = Instance.new("TextLabel")
+    pingText.Name = "PingIndicator"
+    pingText.BackgroundColor3 = C_White
+    pingText.BackgroundTransparency = 1
+    pingText.BorderSizePixel = 0
+    pingText.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    pingText.Position = UDim2.new(0.52503091096878, 5, 0.12897960841656, 0)
+    pingText.Size = UDim2.new(0, 41, 0, 23)
+    pingText.Text = "0ms"
+    pingText.TextColor3 = Color3.fromRGB(0, 255, 120)
+    pingText.TextScaled = true
+    pingText.TextSize = 14
+    pingText.TextStrokeTransparency = 0
+    pingText.TextWrapped = true
+    pingText.ZIndex = 502
+    pingText.Parent = frame
+
+    local fpsIcon = Instance.new("ImageLabel")
+    fpsIcon.Name = "FpsIcon"
+    fpsIcon.BackgroundColor3 = C_White
+    fpsIcon.BackgroundTransparency = 1
+    fpsIcon.BorderSizePixel = 0
+    fpsIcon.Image = "rbxassetid://73236549768178"
+    fpsIcon.Position = UDim2.new(0.66897028684616, 8, -0.057142857462168, 0)
+    fpsIcon.ScaleType = Enum.ScaleType.Fit
+    fpsIcon.Size = UDim2.new(0, 38, 0, 38)
+    fpsIcon.ZIndex = 502
+    fpsIcon.Parent = frame
+
+    local fpsText = Instance.new("TextLabel")
+    fpsText.Name = "FpsIndicator"
+    fpsText.BackgroundColor3 = C_White
+    fpsText.BackgroundTransparency = 1
+    fpsText.BorderSizePixel = 0
+    fpsText.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    fpsText.Position = UDim2.new(0.82048541307449, 0, 0.10040817409754, 0)
+    fpsText.Size = UDim2.new(0, 41, 0, 23)
+    fpsText.Text = "60"
+    fpsText.TextColor3 = Color3.fromRGB(0, 255, 120)
+    fpsText.TextScaled = true
+    fpsText.TextSize = 14
+    fpsText.TextStrokeTransparency = 0
+    fpsText.TextWrapped = true
+    fpsText.ZIndex = 502
+    fpsText.Parent = frame
+
+    if parent then
+        frame.Parent = parent
+    end
+
+    return frame, fpsText, pingText
+end
+
 -- WebhookTemplate
 function SyshubLib.BuildWebhookTemplate()
     local cGroup = Instance.new("CanvasGroup")
@@ -1415,6 +1538,9 @@ function SyshubLib:CreateWindow(config)
     -- Save Modal
     local saveModal, saveInputBox, saveConfirmBtn, saveCancelBtn = SyshubLib.BuildSaveModal(root)
 
+    -- Performance UI
+    local perfFrame, fpsLabel, pingLabel = SyshubLib.BuildPerformanceUI(root)
+
     -- References
     local loginFrame      = T[2]    -- LoginPageFrame
     local loginCloseBtn   = T[14]   -- Login Close
@@ -1603,6 +1729,7 @@ function SyshubLib:CreateWindow(config)
 
     makeDraggable(headerFrame, loaderFrame)
     makeDraggable(minOpenCloseBtn, minModeHolder)
+    makeDraggable(perfFrame, perfFrame)
 
     topCloseBtn.MouseButton1Click:Connect(function()
         cleanupAll()
@@ -1955,6 +2082,23 @@ function SyshubLib:CreateWindow(config)
         return card
     end
 
+    -- Keybind Helper
+    local function resolveKeyCode(kc)
+        if typeof(kc) == "EnumItem" then
+            return kc
+        end
+        if type(kc) == "string" and kc ~= "" and kc ~= "None" and kc ~= "..." then
+            local s, res = pcall(function() return Enum.KeyCode[kc] end)
+            if s and res then return res end
+            for _, item in ipairs(Enum.KeyCode:GetEnumItems()) do
+                if item.Name:lower() == kc:lower() then
+                    return item
+                end
+            end
+        end
+        return nil
+    end
+
     -- Save Config
     function window:SmartSaveConfig(configName)
         task.spawn(function()
@@ -2233,6 +2377,253 @@ function SyshubLib:CreateWindow(config)
     if fpsToggleBtn then
         fpsToggleBtn.MouseButton1Click:Connect(toggleFps)
     end
+
+    -- Perf Stats
+    local renderFrameCount = 0
+    local lastFpsTime = os.clock()
+    local currentCalculatedFps = 60
+
+    trackConn(RunService.RenderStepped:Connect(function()
+        renderFrameCount = renderFrameCount + 1
+        local now = os.clock()
+        local elapsed = now - lastFpsTime
+        if elapsed >= 0.5 then
+            currentCalculatedFps = math.round(renderFrameCount / elapsed)
+            renderFrameCount = 0
+            lastFpsTime = now
+        end
+    end))
+
+    local function fetchCurrentPing()
+        local pingVal = 0
+        pcall(function()
+            local stats = game:GetService("Stats")
+            local net = stats and stats.Network
+            local ssi = net and net:FindFirstChild("ServerStatsItem")
+            local dp = ssi and ssi:FindFirstChild("Data Ping")
+            if dp then
+                pingVal = math.round(dp:GetValue())
+            else
+                local ps = stats and stats:FindFirstChild("PerformanceStats")
+                local p = ps and ps:FindFirstChild("Ping")
+                if p then
+                    pingVal = math.round(p:GetValue())
+                end
+            end
+        end)
+        return pingVal
+    end
+
+    local perfMonitorActive = false
+    local function refreshPerfDisplay()
+        if not perfFrame or not perfFrame.Visible then return end
+        local fps = currentCalculatedFps
+        fpsLabel.Text = tostring(fps)
+        if fps >= 50 then
+            fpsLabel.TextColor3 = Color3.fromRGB(0, 255, 120)
+        elseif fps >= 30 then
+            fpsLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
+        else
+            fpsLabel.TextColor3 = Color3.fromRGB(255, 75, 75)
+        end
+
+        local ping = fetchCurrentPing()
+        pingLabel.Text = tostring(ping) .. "ms"
+        if ping <= 80 then
+            pingLabel.TextColor3 = Color3.fromRGB(0, 255, 120)
+        elseif ping <= 160 then
+            pingLabel.TextColor3 = Color3.fromRGB(255, 200, 50)
+        else
+            pingLabel.TextColor3 = Color3.fromRGB(255, 75, 75)
+        end
+    end
+
+    task.spawn(function()
+        while root and root.Parent do
+            if perfMonitorActive and perfFrame and perfFrame.Visible then
+                refreshPerfDisplay()
+            end
+            task.wait(0.5)
+        end
+    end)
+
+    -- Performance Setting
+    if T[367] then T[367].LayoutOrder = 1 end
+    if T[393] then T[393].LayoutOrder = 3 end
+
+    local perfBgFrame = T[367] and T[367]:Clone()
+    local perfToggleInst = nil
+    local perfTitle = nil
+    local perfToggleBtn = nil
+    local perfIndicator = nil
+    local perfKeyBox = nil
+
+    if perfBgFrame then
+        perfBgFrame.Name = "PerfBgFrame"
+        perfBgFrame.LayoutOrder = 2
+        for _, child in ipairs(perfBgFrame:GetChildren()) do
+            if child:IsA("CanvasGroup") then
+                child:Destroy()
+            end
+        end
+
+        perfToggleInst = templateToggle:Clone()
+        perfToggleInst.Name = "Toggle_PerformanceMonitor"
+        perfToggleInst.Visible = true
+        perfToggleInst.Parent = perfBgFrame
+        perfBgFrame.Parent = settingScroll
+
+        perfTitle = perfToggleInst:FindFirstChild("TitleText", true) or perfToggleInst:FindFirstChildOfClass("TextLabel")
+        if perfTitle then
+            perfTitle.Text = "Performance Monitor"
+            perfTitle.AnchorPoint = Vector2.new(0, 0.5)
+            perfTitle.Position = UDim2.new(0.04, 0, 0.5, 0)
+            perfTitle.Size = UDim2.new(0, 240, 0, 36)
+            perfTitle.TextXAlignment = Enum.TextXAlignment.Left
+        end
+
+        perfToggleBtn = perfToggleInst:FindFirstChild("Togglebtn", true)
+        perfIndicator = perfToggleBtn and perfToggleBtn:FindFirstChild("IndikatorFrame", true)
+        perfKeyBox = perfToggleInst:FindFirstChild("Keybind", true)
+    end
+
+    window.Flags["Performance Monitor"] = false
+    window.Flags["Performance Monitor_Keybind"] = ""
+
+    local function updatePerfToggleVisual(anim)
+        if not perfIndicator then return end
+        local targetPos = perfMonitorActive and UDim2.new(0.57, 0, 0.097, 0) or UDim2.new(0.07, 0, 0.097, 0)
+        local grad = perfIndicator:FindFirstChildOfClass("UIGradient")
+        if anim then
+            TweenService:Create(perfIndicator, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                Position = targetPos
+            }):Play()
+        else
+            perfIndicator.Position = targetPos
+        end
+        if grad then
+            if perfMonitorActive then
+                grad.Color = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(212, 255, 0)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 8))
+                })
+            else
+                grad.Color = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 150, 150)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 80, 80))
+                })
+            end
+        end
+    end
+    updatePerfToggleVisual(false)
+
+    local function togglePerfMonitor()
+        perfMonitorActive = not perfMonitorActive
+        window.Flags["Performance Monitor"] = perfMonitorActive
+        updatePerfToggleVisual(true)
+        if perfFrame then
+            perfFrame.Visible = perfMonitorActive
+        end
+        if perfMonitorActive then
+            refreshPerfDisplay()
+        end
+    end
+
+    if perfToggleBtn then
+        perfToggleBtn.MouseButton1Click:Connect(togglePerfMonitor)
+    end
+
+    local boundPerfCode = nil
+    local isBindingPerf = false
+    local function updatePerfKeyBoxText()
+        if not perfKeyBox then return end
+        perfKeyBox.Text = boundPerfCode and boundPerfCode.Name or "..."
+    end
+    updatePerfKeyBoxText()
+
+    if perfKeyBox then
+        perfKeyBox.Focused:Connect(function()
+            isBindingPerf = true
+            perfKeyBox.Text = "..."
+        end)
+        perfKeyBox.FocusLost:Connect(function()
+            isBindingPerf = false
+            updatePerfKeyBoxText()
+        end)
+    end
+
+    trackConn(UserInputService.InputBegan:Connect(function(input, gpe)
+        if isBindingPerf then
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                if input.KeyCode == Enum.KeyCode.Backspace or input.KeyCode == Enum.KeyCode.Escape then
+                    boundPerfCode = nil
+                    window.Flags["Performance Monitor_Keybind"] = ""
+                else
+                    boundPerfCode = input.KeyCode
+                    window.Flags["Performance Monitor_Keybind"] = input.KeyCode.Name
+                end
+                isBindingPerf = false
+                perfKeyBox:ReleaseFocus()
+                updatePerfKeyBoxText()
+            end
+        elseif boundPerfCode and not gpe then
+            if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == boundPerfCode then
+                togglePerfMonitor()
+            end
+        end
+    end))
+
+    -- Register Elements
+    window.Elements["Performance Monitor"] = {
+        Set = function(self, val)
+            if type(val) == "boolean" and val ~= perfMonitorActive then
+                togglePerfMonitor()
+            end
+        end,
+        SetValue = function(self, val)
+            if type(val) == "boolean" and val ~= perfMonitorActive then
+                togglePerfMonitor()
+            end
+        end,
+        Get = function()
+            return perfMonitorActive
+        end
+    }
+
+    window.Elements["Performance Monitor_Keybind"] = {
+        Set = function(self, val)
+            local kc = resolveKeyCode(val)
+            boundPerfCode = kc
+            window.Flags["Performance Monitor_Keybind"] = kc and kc.Name or ""
+            updatePerfKeyBoxText()
+        end,
+        SetValue = function(self, val)
+            local kc = resolveKeyCode(val)
+            boundPerfCode = kc
+            window.Flags["Performance Monitor_Keybind"] = kc and kc.Name or ""
+            updatePerfKeyBoxText()
+        end,
+        Get = function()
+            return boundPerfCode and boundPerfCode.Name or ""
+        end
+    }
+
+    window.Elements["FPSBoost"] = {
+        Set = function(self, val)
+            if type(val) == "boolean" and val ~= fpsBoostEnabled and toggleFps then
+                toggleFps()
+            end
+        end,
+        SetValue = function(self, val)
+            if type(val) == "boolean" and val ~= fpsBoostEnabled and toggleFps then
+                toggleFps()
+            end
+        end,
+        Get = function()
+            return fpsBoostEnabled
+        end
+    }
+
 
     local saveBtn = settingScroll:FindFirstChild("SaveBtn", true)
     local loadBtn = settingScroll:FindFirstChild("LoadBtn", true)
