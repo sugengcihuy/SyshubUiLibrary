@@ -1,19 +1,19 @@
 -- Example Test
 local SyshubLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/sugengcihuy/SyshubUiLibrary/master/SyshubLib.lua"))()
--- Buat Window
+-- Window Init
 local win = SyshubLib:CreateWindow({
     Title = "Syshub Hub v3",
-    KeySystem = true,         -- Login Key System
-    Key = "syshub",           -- Password masuk
-    DefaultTab = "About",     -- Tab pertama aktif
-    ToggleKey = Enum.KeyCode.Zero, -- Keybind buka tutup UI
+    KeySystem = true,         -- Key System
+    Key = "syshub",           -- Password Auth
+    DefaultTab = "About",     -- First Tab
+    ToggleKey = Enum.KeyCode.Zero, -- Toggle Keybind
 
-    -- Callback FpsBoost
+    -- FPS Callback
     OnFpsBoost = function(state)
         print("[Syshub] FPS Boost:", state)
     end,
 
-    -- About
+    -- About Info
     About = {
         Description = "Syshub Ui Library by Sugeng",
         Discord = "discord.gg/syshub",
@@ -24,16 +24,16 @@ local win = SyshubLib:CreateWindow({
     }
 })
 
--- Buat Tab 1
+-- Tab One
 local tab1 = win:CreateTab({
     Name = "Steal An Egg",
     Icon = SyshubLib.Icons.Tabs.StealAnEgg
 })
 
--- Section 1 di Tab 1
+-- Section One
 local sec1 = tab1:CreateSection({ Name = "Main Fiture", Search = true })
 
--- Toggle + Keybind
+-- Toggle Keybind
 sec1:AddToggle({
     Name = "Auto Steal",
     Default = false,
@@ -43,7 +43,7 @@ sec1:AddToggle({
     end
 })
 
--- Keybind 
+-- Keybind Init
 sec1:AddKeybind({
     Name = "Teleport Base Key",
     Default = Enum.KeyCode.T,
@@ -52,7 +52,7 @@ sec1:AddKeybind({
     end
 })
 
--- Slider
+-- Slider Init
 sec1:AddSlider({
     Name = "WalkSpeed",
     Min = 16,
@@ -63,7 +63,7 @@ sec1:AddSlider({
     end
 })
 
--- Slider + Toggle
+-- Slider Toggle
 sec1:AddSliderToggle({
     Name = "Auto Jump",
     Min = 10,
@@ -74,7 +74,7 @@ sec1:AddSliderToggle({
     ToggleCallback = function(s) print("[Syshub] Jump Toggle:", s) end
 })
 
--- Dropdown (Single Select)
+-- Single Dropdown
 sec1:AddDropdown({
     Name = "Pilih Telur",
     Options = {"Egg Common", "Egg Rare", "Egg Legendary", "Egg Mythic"},
@@ -85,7 +85,7 @@ sec1:AddDropdown({
     end
 })
 
--- Multi Dropdown + Search
+-- Multi Dropdown
 sec1:AddDropdown({
     Name = "Target Mobs",
     Options = {"Bandit", "Monkey", "Gorilla", "Pirate", "Boss", "Dragon"},
@@ -97,7 +97,7 @@ sec1:AddDropdown({
     end
 })
 
--- TextBox
+-- Textbox Toggle
 sec1:AddTextBox({
     Name = "Buy Count",
     Default = "1",
@@ -112,7 +112,7 @@ sec1:AddTextBox({
     end
 })
 
--- TextBox Normal
+-- Textbox Normal
 sec1:AddTextBox({
     Name = "Delay Seconds",
     Default = "5",
@@ -123,7 +123,7 @@ sec1:AddTextBox({
     end
 })
 
--- Button
+-- Action Button
 sec1:AddButton({
     Name = "Claim Rewards",
     Callback = function()
@@ -131,7 +131,7 @@ sec1:AddButton({
     end
 })
 
--- Section 2 di Tab 1
+-- Section Two
 local sec1_misc = tab1:CreateSection({ Name = "Misc Player" })
 
 sec1_misc:AddToggle({
@@ -159,7 +159,7 @@ sec1_misc:AddButton({
     end
 })
 
--- Buat Tab 2
+-- Tab Two
 local tab2 = win:CreateTab({
     Name = "PickAxe",
     Icon = SyshubLib.Icons.Tabs.PickAxe
@@ -186,7 +186,7 @@ sec2:AddDropdown({
     Callback = function(p) print("[Syshub] Pickaxe dipilih:", p) end
 })
 
--- Buat Tab 3
+-- Tab Three
 local tab3 = win:CreateTab({
     Name = "Batu",
     Icon = SyshubLib.Icons.Tabs.Batu
@@ -196,7 +196,7 @@ local sec3 = tab3:CreateSection({ Name = "Ore Crushing" })
 sec3:AddToggle({ Name = "Auto Break Rocks", Default = false })
 sec3:AddButton({ Name = "Sell All Ores", Callback = function() print("[Syshub] Ores sold!") end })
 
--- Settings
+-- Settings Tab
 local tabSettings = win:CreateTab({
     Name = "Settings",
     Icon = SyshubLib.Icons.Tabs.Settings
@@ -286,7 +286,7 @@ tabSettings:AddButton({
     end
 })
 
--- Buat Tab About
+-- About Tab
 local tabAbout = win:CreateTab({
     Name = "About",
     Icon = SyshubLib.Icons.Tabs.About
