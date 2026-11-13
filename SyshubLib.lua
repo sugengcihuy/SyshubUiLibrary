@@ -128,6 +128,7 @@ SyshubLib.Icons = {
         KeyIcon           = "rbxassetid://137132963533530",
     }
 }
+SyshubLib.Icons.Assets = SyshubLib.Icons.Tabs
 
 -- DropScrollFrame
 function SyshubLib.BuildDropScroll()
