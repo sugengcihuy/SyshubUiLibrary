@@ -98,11 +98,31 @@ local myBox = sec1:AddTextBox({
     end
 })
 
--- Button
+-- Webhook URL
+local myWebhook = sec1:AddWebhook({
+    Name = "Discord Webhook",
+    Default = "",
+    Placeholder = "https://discord.com/api/webhooks/...",
+    Callback = function(url)
+        print("Webhook:", url)
+    end
+})
+
+-- Button (Text)
 sec1:AddButton({
-    Name = "Button",
+    Name = "Execute Script",
+    ButtonText = "Run",
     Callback = function()
-        print("Button clicked!")
+        print("Script executed!")
+    end
+})
+
+-- Button (Icon)
+sec1:AddButton({
+    Name = "Send Alert",
+    Icon = SyshubLib.Icons.Assets.PaperPlane,
+    Callback = function()
+        print("Alert sent via Webhook:", myWebhook:Get())
     end
 })
 

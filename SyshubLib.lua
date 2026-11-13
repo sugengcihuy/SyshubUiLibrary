@@ -408,6 +408,347 @@ function SyshubLib.BuildSaveModal(parent)
     return bgFrame, inputBox, confirmBtn, cancelBtn
 end
 
+-- WebhookTemplate
+function SyshubLib.BuildWebhookTemplate()
+    local cGroup = Instance.new("CanvasGroup")
+    cGroup.Name = "TemplateWebhook"
+    cGroup.BackgroundColor3 = Color3.fromRGB(0, 51, 75)
+    cGroup.BorderColor3 = C_Black
+    cGroup.BorderSizePixel = 0
+    cGroup.Position = UDim2.new(0.11977186053991, 0, 0.0016583747928962, 0)
+    cGroup.Size = UDim2.new(0, 524, 0, 56)
+
+    local corner1 = Instance.new("UICorner")
+    corner1.Name = "UICorner"
+    corner1.Parent = cGroup
+
+    local stroke1 = Instance.new("UIStroke")
+    stroke1.Name = "UIStroke"
+    stroke1.ApplyStrokeMode = E_ASM_Context
+    stroke1.BorderStrokePosition = E_BSP_Center
+    stroke1.Color = C_Black
+    stroke1.Enabled = true
+    stroke1.LineJoinMode = E_LJM_Round
+    stroke1.StrokeSizingMode = E_SSM_Fixed
+    stroke1.Thickness = 1.5
+    stroke1.Transparency = 0
+    stroke1.ZIndex = 1
+    stroke1.Parent = cGroup
+
+    local gradFrame = Instance.new("Frame")
+    gradFrame.Name = "Gradient"
+    gradFrame.BackgroundColor3 = C_White
+    gradFrame.BorderColor3 = C_Black
+    gradFrame.BorderSizePixel = 0
+    gradFrame.Position = UDim2.new(0, 0, -0.0011961801210418, 0)
+    gradFrame.Size = UDim2.new(0, 524, 0, 51)
+    gradFrame.Parent = cGroup
+
+    local corner2 = Instance.new("UICorner")
+    corner2.Name = "UICorner"
+    corner2.Parent = gradFrame
+
+    local uigrad = Instance.new("UIGradient")
+    uigrad.Name = "UIGradient"
+    uigrad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 170, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 127))
+    })
+    uigrad.Rotation = 90
+    uigrad.Parent = gradFrame
+
+    local stud = Instance.new("ImageLabel")
+    stud.Name = "Stud"
+    stud.AnchorPoint = Vector2.new(0.5, 0.5)
+    stud.BackgroundColor3 = C_White
+    stud.BackgroundTransparency = 1
+    stud.BorderColor3 = C_Black
+    stud.BorderSizePixel = 0
+    stud.Image = "rbxassetid://6927295847"
+    stud.ImageColor3 = Color3.fromRGB(0, 170, 255)
+    stud.Position = UDim2.new(0.49976146221161, 0, 0.48039215803146, 0)
+    stud.ScaleType = E_ST_Tile
+    stud.Size = UDim2.new(0, 523, 0, 53)
+    stud.TileSize = UDim2.new(0, 80, 0, 80)
+    stud.Parent = gradFrame
+
+    local rays1 = Instance.new("ImageLabel")
+    rays1.Name = "Rays"
+    rays1.AnchorPoint = Vector2.new(0.5, 0.5)
+    rays1.BackgroundColor3 = C_White
+    rays1.BackgroundTransparency = 1
+    rays1.BorderColor3 = C_Black
+    rays1.BorderSizePixel = 0
+    rays1.Image = "rbxassetid://80179449391256"
+    rays1.Position = UDim2.new(0.15061298012733, 0, 0.55754774808884, 0)
+    rays1.Size = UDim2.new(0, 158, 0, 56)
+    rays1.Parent = gradFrame
+
+    local rays2 = Instance.new("ImageLabel")
+    rays2.Name = "Rays"
+    rays2.AnchorPoint = Vector2.new(0.5, 0.5)
+    rays2.BackgroundColor3 = C_White
+    rays2.BackgroundTransparency = 1
+    rays2.BorderColor3 = C_Black
+    rays2.BorderSizePixel = 0
+    rays2.Image = "rbxassetid://98981360538955"
+    rays2.Position = UDim2.new(0.81826704740524, 0, 0.49113631248474, 0)
+    rays2.Size = UDim2.new(0, 158, 0, 50)
+    rays2.Parent = gradFrame
+
+    local inputBox = Instance.new("TextBox")
+    inputBox.Name = "InputBox"
+    inputBox.BackgroundColor3 = Color3.fromRGB(58, 58, 58)
+    inputBox.BackgroundTransparency = 0.6
+    inputBox.BorderColor3 = C_Black
+    inputBox.BorderSizePixel = 0
+    inputBox.CursorPosition = -1
+    inputBox.FontFace = F_Gotham
+    inputBox.PlaceholderColor3 = Color3.fromRGB(79, 79, 79)
+    inputBox.PlaceholderText = "https://discord.com"
+    inputBox.Position = UDim2.new(0.29007634520531, 0, 0.16036388278008, 0)
+    inputBox.Size = UDim2.new(0, 354, 0, 30)
+    inputBox.Text = ""
+    inputBox.TextColor3 = C_White
+    inputBox.TextSize = 18
+    inputBox.TextTruncate = Enum.TextTruncate.AtEnd
+    inputBox.TextWrapped = true
+    inputBox.ClearTextOnFocus = false
+    inputBox.Parent = cGroup
+
+    local inStroke1 = Instance.new("UIStroke")
+    inStroke1.Name = "UIStroke"
+    inStroke1.ApplyStrokeMode = E_ASM_Border
+    inStroke1.BorderStrokePosition = E_BSP_Outer
+    inStroke1.Color = C_Black
+    inStroke1.Enabled = true
+    inStroke1.LineJoinMode = E_LJM_Round
+    inStroke1.StrokeSizingMode = E_SSM_Fixed
+    inStroke1.Thickness = 1.5
+    inStroke1.Transparency = 0
+    inStroke1.ZIndex = 1
+    inStroke1.Parent = inputBox
+
+    local inStroke2 = Instance.new("UIStroke")
+    inStroke2.Name = "UIStroke"
+    inStroke2.ApplyStrokeMode = E_ASM_Border
+    inStroke2.BorderStrokePosition = E_BSP_Inner
+    inStroke2.Color = Color3.fromRGB(76, 76, 76)
+    inStroke2.Enabled = true
+    inStroke2.LineJoinMode = E_LJM_Round
+    inStroke2.StrokeSizingMode = E_SSM_Fixed
+    inStroke2.Thickness = 1.5
+    inStroke2.Transparency = 0
+    inStroke2.ZIndex = 1
+    inStroke2.Parent = inputBox
+
+    local inCorner = Instance.new("UICorner")
+    inCorner.Name = "UICorner"
+    inCorner.CornerRadius = UDim.new(0.1, 0)
+    inCorner.Parent = inputBox
+
+    local inStroke3 = Instance.new("UIStroke")
+    inStroke3.Name = "UIStroke"
+    inStroke3.ApplyStrokeMode = E_ASM_Context
+    inStroke3.BorderStrokePosition = E_BSP_Outer
+    inStroke3.Color = C_Black
+    inStroke3.Enabled = true
+    inStroke3.LineJoinMode = E_LJM_Bevel
+    inStroke3.StrokeSizingMode = E_SSM_Fixed
+    inStroke3.Thickness = 3
+    inStroke3.Transparency = 0
+    inStroke3.ZIndex = 1
+    inStroke3.Parent = inputBox
+
+    local inPadding = Instance.new("UIPadding")
+    inPadding.Name = "UIPadding"
+    inPadding.PaddingLeft = UDim.new(0, 10)
+    inPadding.PaddingRight = UDim.new(0, 10)
+    inPadding.Parent = inputBox
+
+    local titleTxt = Instance.new("TextLabel")
+    titleTxt.Name = "TitleText"
+    titleTxt.AnchorPoint = Vector2.new(0.5, 0.5)
+    titleTxt.BackgroundColor3 = C_White
+    titleTxt.BackgroundTransparency = 1
+    titleTxt.BorderColor3 = C_Black
+    titleTxt.BorderSizePixel = 0
+    titleTxt.FontFace = F_Fredoka
+    titleTxt.Position = UDim2.new(0.13731057941914, 0, 0.43346214294434, 0)
+    titleTxt.Size = UDim2.new(0, 121, 0, 36)
+    titleTxt.Text = "Webhook URL"
+    titleTxt.TextColor3 = C_White
+    titleTxt.TextScaled = true
+    titleTxt.TextSize = 14
+    titleTxt.TextWrapped = true
+    titleTxt.Parent = cGroup
+
+    local titleStroke = Instance.new("UIStroke")
+    titleStroke.Name = "UIStroke"
+    titleStroke.ApplyStrokeMode = E_ASM_Context
+    titleStroke.BorderStrokePosition = E_BSP_Outer
+    titleStroke.Color = C_Black
+    titleStroke.Enabled = true
+    titleStroke.LineJoinMode = E_LJM_Round
+    titleStroke.StrokeSizingMode = E_SSM_Fixed
+    titleStroke.Thickness = 4
+    titleStroke.Transparency = 0
+    titleStroke.ZIndex = 1
+    titleStroke.Parent = titleTxt
+
+    return cGroup
+end
+
+-- ButtonTextTemplate
+function SyshubLib.BuildButtonTextTemplate()
+    local btn = Instance.new("ImageButton")
+    btn.Name = "TemplateButtonText"
+    btn.BackgroundColor3 = C_White
+    btn.BorderColor3 = C_Black
+    btn.BorderSizePixel = 0
+    btn.Position = UDim2.new(0.84351146221161, 0, 0.19607843458652, 0)
+    btn.Size = UDim2.new(0, 70, 0, 31)
+    btn.ZIndex = 2
+
+    local corner = Instance.new("UICorner")
+    corner.Name = "UICorner"
+    corner.CornerRadius = UDim.new(0.1, 0)
+    corner.Parent = btn
+
+    local outStroke = Instance.new("UIStroke")
+    outStroke.Name = "UIStroke"
+    outStroke.ApplyStrokeMode = E_ASM_Context
+    outStroke.BorderStrokePosition = E_BSP_Outer
+    outStroke.Color = C_Black
+    outStroke.Enabled = true
+    outStroke.LineJoinMode = E_LJM_Round
+    outStroke.StrokeSizingMode = E_SSM_Fixed
+    outStroke.Thickness = 1.5
+    outStroke.Transparency = 0
+    outStroke.ZIndex = 1
+    outStroke.Parent = btn
+
+    local inStroke = Instance.new("UIStroke")
+    inStroke.Name = "UIStroke"
+    inStroke.ApplyStrokeMode = E_ASM_Context
+    inStroke.BorderStrokePosition = E_BSP_Inner
+    inStroke.Color = Color3.fromRGB(76, 76, 76)
+    inStroke.Enabled = true
+    inStroke.LineJoinMode = E_LJM_Round
+    inStroke.StrokeSizingMode = E_SSM_Fixed
+    inStroke.Thickness = 1.5
+    inStroke.Transparency = 0
+    inStroke.ZIndex = 1
+    inStroke.Parent = btn
+
+    local grad = Instance.new("UIGradient")
+    grad.Name = "UIGradient"
+    grad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 255, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 255, 0))
+    })
+    grad.Rotation = 90
+    grad.Parent = btn
+
+    local lbl = Instance.new("TextLabel")
+    lbl.Name = "TitleText"
+    lbl.AnchorPoint = Vector2.new(0.5, 0.5)
+    lbl.BackgroundColor3 = C_White
+    lbl.BackgroundTransparency = 1
+    lbl.BorderColor3 = C_Black
+    lbl.BorderSizePixel = 0
+    lbl.FontFace = F_Fredoka
+    lbl.Position = UDim2.new(0.49443098902702, 0, 0.4818489253521, 0)
+    lbl.Size = UDim2.new(0, 66, 0, 21)
+    lbl.Text = "Contoh Aja"
+    lbl.TextColor3 = C_White
+    lbl.TextScaled = true
+    lbl.TextSize = 14
+    lbl.TextWrapped = true
+    lbl.Parent = btn
+
+    local lblStroke = Instance.new("UIStroke")
+    lblStroke.Name = "UIStroke"
+    lblStroke.ApplyStrokeMode = E_ASM_Context
+    lblStroke.BorderStrokePosition = E_BSP_Outer
+    lblStroke.Color = C_Black
+    lblStroke.Enabled = true
+    lblStroke.LineJoinMode = E_LJM_Round
+    lblStroke.StrokeSizingMode = E_SSM_Fixed
+    lblStroke.Thickness = 2
+    lblStroke.Transparency = 0
+    lblStroke.ZIndex = 1
+    lblStroke.Parent = lbl
+
+    return btn
+end
+
+-- ButtonIconTemplate
+function SyshubLib.BuildButtonIconTemplate()
+    local btn = Instance.new("ImageButton")
+    btn.Name = "TemplateButtonIcon"
+    btn.BackgroundColor3 = C_White
+    btn.BorderColor3 = C_Black
+    btn.BorderSizePixel = 0
+    btn.Position = UDim2.new(0.84351146221161, 0, 0.23179244995117, 0)
+    btn.Size = UDim2.new(0, 70, 0, 31)
+    btn.ZIndex = 2
+
+    local corner = Instance.new("UICorner")
+    corner.Name = "UICorner"
+    corner.CornerRadius = UDim.new(0.1, 0)
+    corner.Parent = btn
+
+    local outStroke = Instance.new("UIStroke")
+    outStroke.Name = "UIStroke"
+    outStroke.ApplyStrokeMode = E_ASM_Context
+    outStroke.BorderStrokePosition = E_BSP_Outer
+    outStroke.Color = C_Black
+    outStroke.Enabled = true
+    outStroke.LineJoinMode = E_LJM_Round
+    outStroke.StrokeSizingMode = E_SSM_Fixed
+    outStroke.Thickness = 1.5
+    outStroke.Transparency = 0
+    outStroke.ZIndex = 1
+    outStroke.Parent = btn
+
+    local inStroke = Instance.new("UIStroke")
+    inStroke.Name = "UIStroke"
+    inStroke.ApplyStrokeMode = E_ASM_Context
+    inStroke.BorderStrokePosition = E_BSP_Inner
+    inStroke.Color = Color3.fromRGB(76, 76, 76)
+    inStroke.Enabled = true
+    inStroke.LineJoinMode = E_LJM_Round
+    inStroke.StrokeSizingMode = E_SSM_Fixed
+    inStroke.Thickness = 1.5
+    inStroke.Transparency = 0
+    inStroke.ZIndex = 1
+    inStroke.Parent = btn
+
+    local grad = Instance.new("UIGradient")
+    grad.Name = "UIGradient"
+    grad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 255, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 255, 0))
+    })
+    grad.Rotation = 90
+    grad.Parent = btn
+
+    local icon = Instance.new("ImageLabel")
+    icon.Name = "IconImage"
+    icon.BackgroundColor3 = C_White
+    icon.BackgroundTransparency = 1
+    icon.BorderColor3 = C_Black
+    icon.BorderSizePixel = 0
+    icon.Image = "rbxassetid://77511493233901"
+    icon.Position = UDim2.new(0.28571429848671, 0, 0.032258063554764, 0)
+    icon.ScaleType = E_ST_Fit
+    icon.Size = UDim2.new(0, 30, 0, 30)
+    icon.Parent = btn
+
+    return btn
+end
+
 function SyshubLib.BuildGui(targetParent)
     local objects = {}
     local function c(id, className, parentId, props)
@@ -1040,6 +1381,9 @@ function SyshubLib:CreateWindow(config)
     end
 
     local templateDropScroll    = SyshubLib.BuildDropScroll()
+    local templateWebhook       = SyshubLib.BuildWebhookTemplate()
+    local templateButtonText    = SyshubLib.BuildButtonTextTemplate()
+    local templateButtonIcon    = SyshubLib.BuildButtonIconTemplate()
 
     -- Window Object
     local window = {
@@ -2754,11 +3098,65 @@ function SyshubLib:CreateWindow(config)
                 return tboxObj
             end
 
+            -- Add Webhook
+            function targetTable:AddWebhook(webhookConfig)
+                local parentBody = resolveContainer()
+                webhookConfig = webhookConfig or {}
+                local name = webhookConfig.Name or "Webhook URL"
+                local defaultVal = webhookConfig.Default or ""
+                local placeholder = webhookConfig.Placeholder or "https://discord.com"
+                local callback = webhookConfig.Callback or function() end
+
+                local webhookInst = templateWebhook:Clone()
+                webhookInst.Name = "Webhook_" .. name
+                webhookInst.Visible = true
+                webhookInst.Parent = parentBody
+
+                local titleLabel = webhookInst:FindFirstChild("TitleText", true) or webhookInst:FindFirstChildOfClass("TextLabel")
+                if titleLabel then
+                    titleLabel.Text = name
+                end
+
+                local inputBox = webhookInst:FindFirstChild("InputBox", true)
+                local currentVal = tostring(defaultVal)
+                window.Flags[name] = currentVal
+
+                if inputBox then
+                    inputBox.Text = currentVal
+                    inputBox.PlaceholderText = placeholder
+
+                    inputBox.FocusLost:Connect(function(enterPressed)
+                        currentVal = inputBox.Text
+                        window.Flags[name] = currentVal
+                        callback(currentVal)
+                    end)
+                end
+
+                local webhookObj = {
+                    Set = function(val)
+                        currentVal = tostring(val or "")
+                        window.Flags[name] = currentVal
+                        if inputBox then inputBox.Text = currentVal end
+                        callback(currentVal)
+                    end,
+                    SetValue = function(self, val)
+                        if self ~= webhookObj and val == nil then val = self end
+                        webhookObj.Set(val)
+                    end,
+                    Get = function() return currentVal end,
+                    Instance = webhookInst,
+                }
+                window.Elements[name] = webhookObj
+                return webhookObj
+            end
+
             -- Add Button
             function targetTable:AddButton(btnConfig)
                 local parentBody = resolveContainer()
                 btnConfig = btnConfig or {}
                 local name = btnConfig.Name or "Button"
+                local btnText = btnConfig.ButtonText or btnConfig.Text or "Click"
+                local btnIcon = btnConfig.Icon
                 local callback = btnConfig.Callback or function() end
 
                 local btnInst = templateToggle:Clone()
@@ -2772,34 +3170,63 @@ function SyshubLib:CreateWindow(config)
                 end
 
                 local toggleBtn = btnInst:FindFirstChild("Togglebtn", true)
+                if toggleBtn then toggleBtn:Destroy() end
+
                 local keybindBox = btnInst:FindFirstChild("Keybind", true)
-                if keybindBox then keybindBox.Visible = false end
+                if keybindBox then keybindBox:Destroy() end
 
-                if toggleBtn then
-                    toggleBtn.Size = UDim2.new(0, 80, 0, 31)
-                    toggleBtn.Position = UDim2.new(0.82, 0, 0.2, 0)
-                    local ind = toggleBtn:FindFirstChild("IndikatorFrame", true)
-                    if ind then ind:Destroy() end
-
-                    local btnLabel = Instance.new("TextLabel")
-                    btnLabel.Size = UDim2.new(1, 0, 1, 0)
-                    btnLabel.BackgroundTransparency = 1
-                    btnLabel.Text = "Click"
-                    btnLabel.TextColor3 = C_White
-                    btnLabel.TextSize = 13
-                    btnLabel.FontFace = F_Fredoka
-                    btnLabel.Parent = toggleBtn
-
-                    toggleBtn.MouseButton1Click:Connect(function()
-                        TweenService:Create(toggleBtn, TweenInfo.new(0.1), { Size = UDim2.new(0, 76, 0, 29) }):Play()
-                        task.delay(0.1, function()
-                            TweenService:Create(toggleBtn, TweenInfo.new(0.1), { Size = UDim2.new(0, 80, 0, 31) }):Play()
-                        end)
-                        callback()
-                    end)
+                local actionBtn = nil
+                if btnIcon then
+                    actionBtn = templateButtonIcon:Clone()
+                    actionBtn.Name = "ActionBtn"
+                    actionBtn.Parent = btnInst
+                    local iconImg = actionBtn:FindFirstChild("IconImage", true)
+                    if iconImg then
+                        iconImg.Image = tostring(btnIcon)
+                    end
+                else
+                    actionBtn = templateButtonText:Clone()
+                    actionBtn.Name = "ActionBtn"
+                    actionBtn.Parent = btnInst
+                    local textLbl = actionBtn:FindFirstChild("TitleText", true)
+                    if textLbl then
+                        textLbl.Text = tostring(btnText)
+                    end
                 end
 
-                return btnInst
+                local baseSize = actionBtn.Size
+                actionBtn.MouseButton1Click:Connect(function()
+                    TweenService:Create(actionBtn, TweenInfo.new(0.08), { Size = UDim2.new(baseSize.X.Scale, baseSize.X.Offset - 4, baseSize.Y.Scale, baseSize.Y.Offset - 2) }):Play()
+                    task.delay(0.08, function()
+                        TweenService:Create(actionBtn, TweenInfo.new(0.08), { Size = baseSize }):Play()
+                    end)
+                    callback()
+                end)
+
+                local btnObj = {
+                    SetText = function(text)
+                        local textLbl = actionBtn:FindFirstChild("TitleText", true)
+                        if textLbl then
+                            textLbl.Text = tostring(text)
+                        end
+                    end,
+                    SetIcon = function(icon)
+                        local iconImg = actionBtn:FindFirstChild("IconImage", true)
+                        if iconImg then
+                            iconImg.Image = tostring(icon)
+                        end
+                    end,
+                    SetCallback = function(fn)
+                        callback = fn
+                    end,
+                    Instance = btnInst,
+                    Button = actionBtn,
+                }
+                setmetatable(btnObj, {
+                    __index = btnInst
+                })
+                window.Elements[name] = btnObj
+                return btnObj
             end
 
         end

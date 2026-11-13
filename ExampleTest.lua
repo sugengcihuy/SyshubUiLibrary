@@ -216,7 +216,7 @@ tabSettings:AddKeybind({
     end
 })
 
-tabSettings:AddTextBox({
+local webhookWidget = tabSettings:AddWebhook({
     Name = "Discord Webhook",
     Default = "",
     Placeholder = "https://discord.com/api/webhooks/...",
@@ -226,7 +226,24 @@ tabSettings:AddTextBox({
 })
 
 tabSettings:AddButton({
+    Name = "Send Test Alert",
+    ButtonText = "Send",
+    Callback = function()
+        print("[Syshub] Test alert sent to:", webhookWidget:Get())
+    end
+})
+
+tabSettings:AddButton({
+    Name = "Dispatch Report",
+    Icon = SyshubLib.Icons.Assets.PaperPlane,
+    Callback = function()
+        print("[Syshub] Dispatching report via PaperPlane icon button!")
+    end
+})
+
+tabSettings:AddButton({
     Name = "Unload UI",
+    ButtonText = "Unload",
     Callback = function()
         if win.Root then
             win.Root:Destroy()
