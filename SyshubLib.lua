@@ -508,7 +508,7 @@ function SyshubLib.BuildWebhookTemplate()
     inputBox.PlaceholderColor3 = Color3.fromRGB(79, 79, 79)
     inputBox.PlaceholderText = "https://discord.com"
     inputBox.Position = UDim2.new(0.29007634520531, 0, 0.16036388278008, 0)
-    inputBox.Size = UDim2.new(0, 354, 0, 30)
+    inputBox.Size = UDim2.new(0, 280, 0, 30)
     inputBox.Text = ""
     inputBox.TextColor3 = C_White
     inputBox.TextSize = 18
@@ -566,6 +566,79 @@ function SyshubLib.BuildWebhookTemplate()
     inPadding.PaddingLeft = UDim.new(0, 10)
     inPadding.PaddingRight = UDim.new(0, 10)
     inPadding.Parent = inputBox
+
+    -- Toggle Button
+    local toggleBtn = Instance.new("ImageButton")
+    toggleBtn.Name = "Togglebtn"
+    toggleBtn.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
+    toggleBtn.BackgroundTransparency = 0.5
+    toggleBtn.BorderColor3 = C_Black
+    toggleBtn.BorderSizePixel = 0
+    toggleBtn.Position = UDim2.new(0.84351146221161, 0, 0.19607843458652, 0)
+    toggleBtn.Size = UDim2.new(0, 70, 0, 31)
+    toggleBtn.ZIndex = 2
+    toggleBtn.Parent = cGroup
+
+    local togCorner = Instance.new("UICorner")
+    togCorner.Name = "UICorner"
+    togCorner.CornerRadius = UDim.new(0.1, 0)
+    togCorner.Parent = toggleBtn
+
+    local togStroke1 = Instance.new("UIStroke")
+    togStroke1.Name = "UIStroke"
+    togStroke1.ApplyStrokeMode = E_ASM_Context
+    togStroke1.BorderStrokePosition = E_BSP_Outer
+    togStroke1.Color = C_Black
+    togStroke1.Enabled = true
+    togStroke1.LineJoinMode = E_LJM_Round
+    togStroke1.StrokeSizingMode = E_SSM_Fixed
+    togStroke1.Thickness = 1.5
+    togStroke1.Parent = toggleBtn
+
+    local togStroke2 = Instance.new("UIStroke")
+    togStroke2.Name = "UIStroke"
+    togStroke2.ApplyStrokeMode = E_ASM_Context
+    togStroke2.BorderStrokePosition = E_BSP_Inner
+    togStroke2.Color = Color3.fromRGB(76, 76, 76)
+    togStroke2.Enabled = true
+    togStroke2.LineJoinMode = E_LJM_Round
+    togStroke2.StrokeSizingMode = E_SSM_Fixed
+    togStroke2.Thickness = 1.5
+    togStroke2.Parent = toggleBtn
+
+    local indFrame = Instance.new("Frame")
+    indFrame.Name = "IndikatorFrame"
+    indFrame.BackgroundColor3 = C_White
+    indFrame.BorderColor3 = C_Black
+    indFrame.BorderSizePixel = 0
+    indFrame.Position = UDim2.new(0.07, 0, 0.096774190664291, 0)
+    indFrame.Size = UDim2.new(0, 25, 0, 25)
+    indFrame.Parent = toggleBtn
+
+    local indStroke = Instance.new("UIStroke")
+    indStroke.Name = "UIStroke"
+    indStroke.ApplyStrokeMode = E_ASM_Context
+    indStroke.BorderStrokePosition = E_BSP_Outer
+    indStroke.Color = Color3.fromRGB(16, 20, 26)
+    indStroke.Enabled = true
+    indStroke.LineJoinMode = E_LJM_Round
+    indStroke.StrokeSizingMode = E_SSM_Fixed
+    indStroke.Thickness = 2.5
+    indStroke.Parent = indFrame
+
+    local indCorner = Instance.new("UICorner")
+    indCorner.Name = "UICorner"
+    indCorner.CornerRadius = UDim.new(0.1, 0)
+    indCorner.Parent = indFrame
+
+    local indGrad = Instance.new("UIGradient")
+    indGrad.Name = "UIGradient"
+    indGrad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 150, 150)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 80, 80))
+    })
+    indGrad.Rotation = 90
+    indGrad.Parent = indFrame
 
     local titleTxt = Instance.new("TextLabel")
     titleTxt.Name = "TitleText"
@@ -1406,7 +1479,7 @@ function SyshubLib:CreateWindow(config)
         if isDestroyed then return end
         isDestroyed = true
 
-        -- Disable FPS Boost
+        -- Disable Fps
         if fpsBoostEnabled and toggleFps then
             pcall(toggleFps)
         end
@@ -1546,7 +1619,7 @@ function SyshubLib:CreateWindow(config)
         loaderFrame.Visible = true
     end)
 
-    -- Hotkey Toggle Logic
+    -- Hotkey Logic
     if toggleKey then
         trackConn(UserInputService.InputBegan:Connect(function(input, gp)
             if gp then return end
@@ -1827,7 +1900,7 @@ function SyshubLib:CreateWindow(config)
         end
     end
 
-    -- Config Card Holder
+    -- Card Holder
     function window:AddConfigCard(configName, onLoad, onDelete)
         if not scrollingConfig or not templateConfigCard then return end
         local card = templateConfigCard:Clone()
@@ -1864,13 +1937,18 @@ function SyshubLib:CreateWindow(config)
             end)
         end
 
-        card.InputBegan:Connect(function(input)
+        -- Card Click
+        local function onCardClicked(input)
             if isDeleting then return end
             if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                 window:SelectConfigCard(card, configName)
                 if onLoad then onLoad(configName) end
             end
-        end)
+        end
+        card.InputBegan:Connect(onCardClicked)
+        if nameLabel then nameLabel.InputBegan:Connect(onCardClicked) end
+        local cfgIcon = card:FindFirstChild("ConfigIcon")
+        if cfgIcon then cfgIcon.InputBegan:Connect(onCardClicked) end
 
         window:SetCardVisual(card, false, false)
         card.Parent = scrollingConfig
@@ -1885,7 +1963,8 @@ function SyshubLib:CreateWindow(config)
                     if not isfolder("SyshubHub") then makefolder("SyshubHub") end
                     local rootPath = "SyshubHub/" .. (window.Folder or tostring(game.PlaceId or "SysHub"))
                     if not isfolder(rootPath) then makefolder(rootPath) end
-                    if not isfolder(BaseFolder) then makefolder(BaseFolder) end
+                    local cfgDir = rootPath .. "/config"
+                    if not isfolder(cfgDir) then makefolder(cfgDir) end
                 end
 
                 local data = {}
@@ -2236,7 +2315,7 @@ function SyshubLib:CreateWindow(config)
         end)
     end
 
-    -- Auto Load Config
+    -- Auto Load
     task.spawn(function()
         pcall(function()
             if type(isfolder) == "function" and isfolder(BaseFolder) and type(listfiles) == "function" then
@@ -2334,7 +2413,7 @@ function SyshubLib:CreateWindow(config)
                 return getContainer
             end
 
-            -- Add Toggle Widget
+            -- Add Toggle
             function targetTable:AddToggle(toggleConfig)
                 local parentBody = resolveContainer()
                 toggleConfig = toggleConfig or {}
@@ -2663,7 +2742,7 @@ function SyshubLib:CreateWindow(config)
                 return sliderObj
             end
 
-            -- Add Slider + Toggle
+            -- Slider Toggle
             function targetTable:AddSliderToggle(sdtgConfig)
                 local parentBody = resolveContainer()
                 sdtgConfig = sdtgConfig or {}
@@ -2830,6 +2909,36 @@ function SyshubLib:CreateWindow(config)
                 if dropIcon then dropIcon.Active = false end
 
                 -- Side Toggle
+                local sideToggleObj = nil
+                local tState = dropdownConfig.ToggleDefault or false
+                local function updateSideT(anim)
+                    if not sideToggleBtn then return end
+                    local indFrame = sideToggleBtn:FindFirstChild("IndikatorFrame", true)
+                    if not indFrame then return end
+                    local targetPos = tState and UDim2.new(0.57, 0, 0.097, 0) or UDim2.new(0.07, 0, 0.097, 0)
+                    local grad = indFrame:FindFirstChildOfClass("UIGradient")
+                    if anim then
+                        TweenService:Create(indFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                            Position = targetPos
+                        }):Play()
+                    else
+                        indFrame.Position = targetPos
+                    end
+                    if grad then
+                        if tState then
+                            grad.Color = ColorSequence.new({
+                                ColorSequenceKeypoint.new(0, Color3.fromRGB(212, 255, 0)),
+                                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 8))
+                            })
+                        else
+                            grad.Color = ColorSequence.new({
+                                ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 150, 150)),
+                                ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 80, 80))
+                            })
+                        end
+                    end
+                end
+
                 if not hasToggle and sideToggleBtn then
                     sideToggleBtn.Visible = false
                     if dropHolder then
@@ -2837,18 +2946,39 @@ function SyshubLib:CreateWindow(config)
                     end
                 elseif hasToggle and sideToggleBtn then
                     sideToggleBtn.Visible = true
-                    local tState = dropdownConfig.ToggleDefault or false
-                    local indFrame = sideToggleBtn:FindFirstChild("IndikatorFrame", true)
-                    local function updateSideT()
-                        if not indFrame then return end
-                        indFrame.Position = tState and UDim2.new(0.57, 0, 0.097, 0) or UDim2.new(0.07, 0, 0.097, 0)
-                    end
-                    updateSideT()
+                    window.Flags[name .. "_Toggle"] = tState
+                    updateSideT(false)
                     sideToggleBtn.MouseButton1Click:Connect(function()
                         tState = not tState
-                        updateSideT()
-                        toggleCallback(tState)
+                        window.Flags[name .. "_Toggle"] = tState
+                        updateSideT(true)
+                        pcall(function() toggleCallback(tState) end)
                     end)
+
+                    sideToggleObj = {
+                        Set = function(...)
+                            local args = {...}
+                            local s = args[1]
+                            if s == sideToggleObj then s = args[2] end
+                            tState = not not s
+                            window.Flags[name .. "_Toggle"] = tState
+                            updateSideT(true)
+                            pcall(function() toggleCallback(tState) end)
+                        end,
+                        SetValue = function(...)
+                            local args = {...}
+                            local s = args[1]
+                            if s == sideToggleObj then s = args[2] end
+                            tState = not not s
+                            window.Flags[name .. "_Toggle"] = tState
+                            updateSideT(true)
+                            pcall(function() toggleCallback(tState) end)
+                        end,
+                        Get = function(...)
+                            return tState
+                        end,
+                    }
+                    window.Elements[name .. "_Toggle"] = sideToggleObj
                 end
 
                 -- DropScrollFrame
@@ -2998,28 +3128,50 @@ function SyshubLib:CreateWindow(config)
 
                 populateOptions(options)
 
+                -- Dropdown Functions
+                local function applyOption(opt)
+                    currentVal = opt
+                    window.Flags[name] = currentVal
+                    if indicator then
+                        indicator.Text = (opt and tostring(opt) ~= "") and tostring(opt) or "Select..."
+                    end
+                    pcall(function() callback(opt) end)
+                end
+
                 local dropObj = {
-                    Set = function(opt)
-                        currentVal = opt
-                        window.Flags[name] = currentVal
-                        if indicator then
-                            indicator.Text = tostring(opt)
-                        end
-                        callback(opt)
+                    Set = function(...)
+                        local args = {...}
+                        local opt = args[1]
+                        if opt == dropObj then opt = args[2] end
+                        applyOption(opt)
                     end,
-                    SetValue = function(self, opt)
-                        if self ~= dropObj and opt == nil then opt = self end
-                        dropObj.Set(opt)
+                    SetValue = function(...)
+                        local args = {...}
+                        local opt = args[1]
+                        if opt == dropObj then opt = args[2] end
+                        applyOption(opt)
                     end,
-                    Select = function(self, opt)
-                        if self ~= dropObj and opt == nil then opt = self end
-                        dropObj.Set(opt)
+                    Select = function(...)
+                        local args = {...}
+                        local opt = args[1]
+                        if opt == dropObj then opt = args[2] end
+                        applyOption(opt)
                     end,
                     Refresh = function(newOpts)
                         options = newOpts
                         populateOptions(options)
                     end,
-                    Get = function() return currentVal end,
+                    Get = function(...)
+                        return currentVal
+                    end,
+                    SetToggle = function(s)
+                        if not hasToggle or not sideToggleObj then return end
+                        sideToggleObj.Set(s)
+                    end,
+                    GetToggle = function()
+                        return tState
+                    end,
+                    Instance = dropInst,
                 }
                 window.Elements[name] = dropObj
                 return dropObj
@@ -3033,6 +3185,9 @@ function SyshubLib:CreateWindow(config)
                 local defaultVal = tboxConfig.Default or "1"
                 local placeholder = tboxConfig.Placeholder or "Enter..."
                 local callback = tboxConfig.Callback or function() end
+                local hasToggle = tboxConfig.HasToggle or false
+                local toggleDefault = tboxConfig.ToggleDefault or false
+                local toggleCallback = tboxConfig.ToggleCallback or function() end
 
                 local tboxInst = templateTextBox:Clone()
                 tboxInst.Name = "TBox_" .. name
@@ -3048,13 +3203,20 @@ function SyshubLib:CreateWindow(config)
                 local plusBtn = tboxInst:FindFirstChild("Plusbtn", true)
                 local minBtn = tboxInst:FindFirstChild("Minbtn", true)
                 local sideToggle = tboxInst:FindFirstChild("Togglebtn", true)
-
-                if sideToggle then
-                    sideToggle.Visible = false
-                end
+                local indFrame = sideToggle and sideToggle:FindFirstChild("IndikatorFrame", true)
 
                 local currentVal = tostring(defaultVal)
+                local toggleState = toggleDefault
                 window.Flags[name] = currentVal
+
+                local function applyTextVal(val)
+                    currentVal = tostring(val or "")
+                    window.Flags[name] = currentVal
+                    if inputBox then
+                        inputBox.Text = currentVal
+                    end
+                    pcall(function() callback(currentVal) end)
+                end
 
                 if inputBox then
                     inputBox.Text = currentVal
@@ -3063,7 +3225,7 @@ function SyshubLib:CreateWindow(config)
                     inputBox.FocusLost:Connect(function(enterPressed)
                         currentVal = inputBox.Text
                         window.Flags[name] = currentVal
-                        callback(currentVal)
+                        pcall(function() callback(currentVal) end)
                     end)
                 end
 
@@ -3074,7 +3236,7 @@ function SyshubLib:CreateWindow(config)
                         inputBox.Text = tostring(num)
                         currentVal = inputBox.Text
                         window.Flags[name] = currentVal
-                        callback(currentVal)
+                        pcall(function() callback(currentVal) end)
                     end)
                 end
 
@@ -3085,24 +3247,115 @@ function SyshubLib:CreateWindow(config)
                         inputBox.Text = tostring(num)
                         currentVal = inputBox.Text
                         window.Flags[name] = currentVal
-                        callback(currentVal)
+                        pcall(function() callback(currentVal) end)
                     end)
                 end
 
+                -- Toggle Logic
+                local function updateToggleVisual(anim)
+                    if not indFrame then return end
+                    local targetPos = toggleState and UDim2.new(0.57, 0, 0.097, 0) or UDim2.new(0.07, 0, 0.097, 0)
+                    local grad = indFrame:FindFirstChildOfClass("UIGradient")
+                    if anim then
+                        TweenService:Create(indFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                            Position = targetPos
+                        }):Play()
+                    else
+                        indFrame.Position = targetPos
+                    end
+                    if grad then
+                        if toggleState then
+                            grad.Color = ColorSequence.new({
+                                ColorSequenceKeypoint.new(0, Color3.fromRGB(212, 255, 0)),
+                                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 8))
+                            })
+                        else
+                            grad.Color = ColorSequence.new({
+                                ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 150, 150)),
+                                ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 80, 80))
+                            })
+                        end
+                    end
+                end
+
+                if sideToggle then
+                    if hasToggle then
+                        sideToggle.Visible = true
+                        window.Flags[name .. "_Toggle"] = toggleState
+                        updateToggleVisual(false)
+
+                        sideToggle.MouseButton1Click:Connect(function()
+                            toggleState = not toggleState
+                            window.Flags[name .. "_Toggle"] = toggleState
+                            updateToggleVisual(true)
+                            pcall(function() toggleCallback(toggleState) end)
+                        end)
+                    else
+                        sideToggle.Visible = false
+                    end
+                end
+
                 local tboxObj = {
-                    Set = function(val)
-                        currentVal = tostring(val)
-                        window.Flags[name] = currentVal
-                        if inputBox then inputBox.Text = currentVal end
-                        callback(currentVal)
+                    Set = function(...)
+                        local args = {...}
+                        local val = args[1]
+                        if val == tboxObj then val = args[2] end
+                        applyTextVal(val)
                     end,
-                    SetValue = function(self, val)
-                        if self ~= tboxObj and val == nil then val = self end
-                        tboxObj.Set(val)
+                    SetValue = function(...)
+                        local args = {...}
+                        local val = args[1]
+                        if val == tboxObj then val = args[2] end
+                        if type(val) == "table" then
+                            if val.Value ~= nil then applyTextVal(val.Value) end
+                            if val.Enabled ~= nil and sideToggle and hasToggle then
+                                toggleState = not not val.Enabled
+                                window.Flags[name .. "_Toggle"] = toggleState
+                                updateToggleVisual(true)
+                                pcall(function() toggleCallback(toggleState) end)
+                            end
+                        else
+                            applyTextVal(val)
+                        end
                     end,
-                    Get = function() return currentVal end,
+                    Get = function(...)
+                        return (inputBox and inputBox.Text) or currentVal
+                    end,
+                    SetToggle = function(s)
+                        if not sideToggle or not hasToggle then return end
+                        toggleState = not not s
+                        window.Flags[name .. "_Toggle"] = toggleState
+                        updateToggleVisual(true)
+                        pcall(function() toggleCallback(toggleState) end)
+                    end,
+                    GetToggle = function()
+                        return toggleState
+                    end,
+                    Instance = tboxInst,
                 }
                 window.Elements[name] = tboxObj
+
+                if hasToggle and sideToggle then
+                    local sideToggleObj = {
+                        Set = function(...)
+                            local args = {...}
+                            local s = args[1]
+                            if s == sideToggleObj then s = args[2] end
+                            tboxObj.SetToggle(s)
+                        end,
+                        SetValue = function(...)
+                            local args = {...}
+                            local s = args[1]
+                            if s == sideToggleObj then s = args[2] end
+                            tboxObj.SetToggle(s)
+                        end,
+                        Get = function(...)
+                            return toggleState
+                        end,
+                    }
+                    window.Elements[name .. "_Toggle"] = sideToggleObj
+                end
+
                 return tboxObj
             end
 
@@ -3111,9 +3364,12 @@ function SyshubLib:CreateWindow(config)
                 local parentBody = resolveContainer()
                 webhookConfig = webhookConfig or {}
                 local name = webhookConfig.Name or "Webhook URL"
-                local defaultVal = webhookConfig.Default or ""
+                local defaultVal = webhookConfig.Default or webhookConfig.Url or ""
                 local placeholder = webhookConfig.Placeholder or "https://discord.com"
                 local callback = webhookConfig.Callback or function() end
+                local hasToggle = (webhookConfig.HasToggle ~= false)
+                local toggleDefault = webhookConfig.ToggleDefault or webhookConfig.Enabled or false
+                local toggleCallback = webhookConfig.ToggleCallback or function() end
 
                 local webhookInst = templateWebhook:Clone()
                 webhookInst.Name = "Webhook_" .. name
@@ -3126,8 +3382,21 @@ function SyshubLib:CreateWindow(config)
                 end
 
                 local inputBox = webhookInst:FindFirstChild("InputBox", true)
+                local sideToggle = webhookInst:FindFirstChild("Togglebtn", true)
+                local indFrame = sideToggle and sideToggle:FindFirstChild("IndikatorFrame", true)
+
                 local currentVal = tostring(defaultVal)
+                local toggleState = toggleDefault
                 window.Flags[name] = currentVal
+
+                local function applyWebhookUrl(val)
+                    currentVal = tostring(val or "")
+                    window.Flags[name] = currentVal
+                    if inputBox then
+                        inputBox.Text = currentVal
+                    end
+                    pcall(function() callback(currentVal) end)
+                end
 
                 if inputBox then
                     inputBox.Text = currentVal
@@ -3136,25 +3405,118 @@ function SyshubLib:CreateWindow(config)
                     inputBox.FocusLost:Connect(function(enterPressed)
                         currentVal = inputBox.Text
                         window.Flags[name] = currentVal
-                        callback(currentVal)
+                        pcall(function() callback(currentVal) end)
                     end)
                 end
 
+                -- Toggle Switch
+                local function updateToggleVisual(anim)
+                    if not indFrame then return end
+                    local targetPos = toggleState and UDim2.new(0.57, 0, 0.097, 0) or UDim2.new(0.07, 0, 0.097, 0)
+                    local grad = indFrame:FindFirstChildOfClass("UIGradient")
+                    if anim then
+                        TweenService:Create(indFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                            Position = targetPos
+                        }):Play()
+                    else
+                        indFrame.Position = targetPos
+                    end
+                    if grad then
+                        if toggleState then
+                            grad.Color = ColorSequence.new({
+                                ColorSequenceKeypoint.new(0, Color3.fromRGB(212, 255, 0)),
+                                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 8))
+                            })
+                        else
+                            grad.Color = ColorSequence.new({
+                                ColorSequenceKeypoint.new(0, Color3.fromRGB(150, 150, 150)),
+                                ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 80, 80))
+                            })
+                        end
+                    end
+                end
+
+                if sideToggle then
+                    if hasToggle then
+                        sideToggle.Visible = true
+                        window.Flags[name .. "_Toggle"] = toggleState
+                        updateToggleVisual(false)
+
+                        sideToggle.MouseButton1Click:Connect(function()
+                            toggleState = not toggleState
+                            window.Flags[name .. "_Toggle"] = toggleState
+                            updateToggleVisual(true)
+                            pcall(function() toggleCallback(toggleState) end)
+                        end)
+                    else
+                        sideToggle.Visible = false
+                        if inputBox then
+                            inputBox.Size = UDim2.new(0, 354, 0, 30)
+                        end
+                    end
+                end
+
                 local webhookObj = {
-                    Set = function(val)
-                        currentVal = tostring(val or "")
-                        window.Flags[name] = currentVal
-                        if inputBox then inputBox.Text = currentVal end
-                        callback(currentVal)
+                    Set = function(...)
+                        local args = {...}
+                        local val = args[1]
+                        if val == webhookObj then val = args[2] end
+                        applyWebhookUrl(val)
                     end,
-                    SetValue = function(self, val)
-                        if self ~= webhookObj and val == nil then val = self end
-                        webhookObj.Set(val)
+                    SetValue = function(...)
+                        local args = {...}
+                        local val = args[1]
+                        if val == webhookObj then val = args[2] end
+                        if type(val) == "table" then
+                            if val.Url ~= nil then applyWebhookUrl(val.Url) end
+                            if val.Enabled ~= nil and sideToggle and hasToggle then
+                                toggleState = not not val.Enabled
+                                window.Flags[name .. "_Toggle"] = toggleState
+                                updateToggleVisual(true)
+                                pcall(function() toggleCallback(toggleState) end)
+                            end
+                        else
+                            applyWebhookUrl(val)
+                        end
                     end,
-                    Get = function() return currentVal end,
+                    Get = function(...)
+                        return (inputBox and inputBox.Text) or currentVal
+                    end,
+                    SetToggle = function(s)
+                        if not sideToggle or not hasToggle then return end
+                        toggleState = not not s
+                        window.Flags[name .. "_Toggle"] = toggleState
+                        updateToggleVisual(true)
+                        pcall(function() toggleCallback(toggleState) end)
+                    end,
+                    GetToggle = function()
+                        return toggleState
+                    end,
                     Instance = webhookInst,
                 }
                 window.Elements[name] = webhookObj
+
+                if hasToggle and sideToggle then
+                    local sideToggleObj = {
+                        Set = function(...)
+                            local args = {...}
+                            local s = args[1]
+                            if s == sideToggleObj then s = args[2] end
+                            webhookObj.SetToggle(s)
+                        end,
+                        SetValue = function(...)
+                            local args = {...}
+                            local s = args[1]
+                            if s == sideToggleObj then s = args[2] end
+                            webhookObj.SetToggle(s)
+                        end,
+                        Get = function(...)
+                            return toggleState
+                        end,
+                    }
+                    window.Elements[name .. "_Toggle"] = sideToggleObj
+                end
+
                 return webhookObj
             end
 

@@ -89,8 +89,24 @@ sec1:AddTextBox({
     Name = "Buy Count",
     Default = "1",
     Placeholder = "Jumlah...",
+    HasToggle = true,
+    ToggleDefault = false,
     Callback = function(val)
         print("[Syshub] Jumlah beli:", val)
+    end,
+    ToggleCallback = function(state)
+        print("[Syshub] Auto Buy Toggle:", state)
+    end
+})
+
+-- TextBox Normal
+sec1:AddTextBox({
+    Name = "Delay Seconds",
+    Default = "5",
+    Placeholder = "Detik...",
+    HasToggle = false,
+    Callback = function(val)
+        print("[Syshub] Delay:", val)
     end
 })
 
@@ -220,8 +236,13 @@ local webhookWidget = tabSettings:AddWebhook({
     Name = "Discord Webhook",
     Default = "",
     Placeholder = "https://discord.com/api/webhooks/...",
+    HasToggle = true,
+    ToggleDefault = false,
     Callback = function(url)
         print("[Syshub] Webhook set:", url)
+    end,
+    ToggleCallback = function(state)
+        print("[Syshub] Webhook active:", state)
     end
 })
 
