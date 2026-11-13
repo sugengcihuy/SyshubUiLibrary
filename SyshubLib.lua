@@ -2432,6 +2432,23 @@ function SyshubLib:CreateWindow(config)
                 return getContainer
             end
 
+            -- Keybind Helper
+            local function resolveKeyCode(kc)
+                if typeof(kc) == "EnumItem" then
+                    return kc
+                end
+                if type(kc) == "string" and kc ~= "" and kc ~= "None" and kc ~= "..." then
+                    local s, res = pcall(function() return Enum.KeyCode[kc] end)
+                    if s and res then return res end
+                    for _, item in ipairs(Enum.KeyCode:GetEnumItems()) do
+                        if item.Name:lower() == kc:lower() then
+                            return item
+                        end
+                    end
+                end
+                return nil
+            end
+
             -- Add Toggle
             function targetTable:AddToggle(toggleConfig)
                 local parentBody = resolveContainer()
@@ -2492,31 +2509,31 @@ function SyshubLib:CreateWindow(config)
                     state = not state
                     window.Flags[name] = state
                     updateVisual(true)
-                    callback(state)
+                    pcall(function() callback(state) end)
                 end
 
                 if toggleBtn then
                     toggleBtn.MouseButton1Click:Connect(toggle)
                 end
 
-                -- Keybind
-                local boundKeyCode = nil
-                if typeof(keybind) == "EnumItem" then
-                    boundKeyCode = keybind
-                elseif type(keybind) == "string" and keybind ~= "" and keybind ~= "None" then
-                    pcall(function() boundKeyCode = Enum.KeyCode[keybind] end)
+                -- Keybind Init
+                local boundKeyCode = resolveKeyCode(keybind)
+                if keyBoxInst then
+                    window.Flags[name .. "_Keybind"] = boundKeyCode and boundKeyCode.Name or ""
                 end
 
                 local isBinding = false
                 local function updateKeyboxText()
                     if not keyBoxInst then return end
-                    if boundKeyCode then
-                        keyBoxInst.Text = boundKeyCode.Name
-                    else
-                        keyBoxInst.Text = "..."
-                    end
+                    keyBoxInst.Text = boundKeyCode and boundKeyCode.Name or "..."
                 end
                 updateKeyboxText()
+
+                local function applyToggleKey(kc)
+                    boundKeyCode = resolveKeyCode(kc)
+                    window.Flags[name .. "_Keybind"] = boundKeyCode and boundKeyCode.Name or ""
+                    updateKeyboxText()
+                end
 
                 if keyBoxInst then
                     keyBoxInst.Focused:Connect(function()
@@ -2533,16 +2550,14 @@ function SyshubLib:CreateWindow(config)
                 trackConn(UserInputService.InputBegan:Connect(function(input, gp)
                     if isBinding and input.UserInputType == Enum.UserInputType.Keyboard then
                         if input.KeyCode == Enum.KeyCode.Backspace or input.KeyCode == Enum.KeyCode.Escape then
-                            boundKeyCode = nil
+                            applyToggleKey(nil)
                         else
-                            boundKeyCode = input.KeyCode
+                            applyToggleKey(input.KeyCode)
                         end
                         isBinding = false
                         if keyBoxInst then
                             keyBoxInst:ReleaseFocus()
-                            updateKeyboxText()
                         end
-                        window.Flags[name .. "_Keybind"] = boundKeyCode and boundKeyCode.Name or nil
                         return
                     end
 
@@ -2553,30 +2568,50 @@ function SyshubLib:CreateWindow(config)
                 end))
 
                 local toggleObj = {
-                    Set = function(newVal)
+                    Set = function(self, newVal)
+                        if newVal == nil then newVal = self end
                         state = newVal
                         window.Flags[name] = state
                         updateVisual(true)
-                        callback(state)
+                        pcall(function() callback(state) end)
                     end,
                     SetValue = function(self, newVal)
-                        if self ~= toggleObj and newVal == nil then newVal = self end
-                        state = newVal
-                        window.Flags[name] = state
-                        updateVisual(true)
-                        callback(state)
+                        if newVal == nil then newVal = self end
+                        toggleObj.Set(newVal)
                     end,
-                    SetKeybind = function(kc)
-                        if typeof(kc) == "EnumItem" then
-                            boundKeyCode = kc
-                        elseif type(kc) == "string" then
-                            pcall(function() boundKeyCode = Enum.KeyCode[kc] end)
-                        end
-                        updateKeyboxText()
+                    SetKeybind = function(self, kc)
+                        if kc == nil then kc = self end
+                        applyToggleKey(kc)
                     end,
-                    Get = function() return state end,
+                    GetKeybind = function()
+                        return boundKeyCode and boundKeyCode.Name or ""
+                    end,
+                    Get = function(...)
+                        return state
+                    end,
+                    Instance = toggleInst,
                 }
                 window.Elements[name] = toggleObj
+
+                -- Toggle Keybind
+                if keyBoxInst then
+                    local toggleKeybindObj = {
+                        Set = function(self, kc)
+                            if kc == nil then kc = self end
+                            applyToggleKey(kc)
+                        end,
+                        SetValue = function(self, kc)
+                            if kc == nil then kc = self end
+                            applyToggleKey(kc)
+                        end,
+                        Get = function(...)
+                            return boundKeyCode and boundKeyCode.Name or ""
+                        end,
+                        Instance = keyBoxInst,
+                    }
+                    window.Elements[name .. "_Keybind"] = toggleKeybindObj
+                end
+
                 return toggleObj
             end
 
@@ -2602,13 +2637,8 @@ function SyshubLib:CreateWindow(config)
                 if toggleBtn then toggleBtn.Visible = false end
 
                 local keyBoxInst = kbInst:FindFirstChild("Keybind", true)
-                local boundKeyCode = nil
-
-                if typeof(defaultKey) == "EnumItem" then
-                    boundKeyCode = defaultKey
-                elseif type(defaultKey) == "string" and defaultKey ~= "" then
-                    pcall(function() boundKeyCode = Enum.KeyCode[defaultKey] end)
-                end
+                local boundKeyCode = resolveKeyCode(defaultKey)
+                window.Flags[name] = boundKeyCode and boundKeyCode.Name or ""
 
                 local isBinding = false
                 local function updateText()
@@ -2616,6 +2646,12 @@ function SyshubLib:CreateWindow(config)
                     keyBoxInst.Text = boundKeyCode and boundKeyCode.Name or "..."
                 end
                 updateText()
+
+                local function applyKey(kc)
+                    boundKeyCode = resolveKeyCode(kc)
+                    window.Flags[name] = boundKeyCode and boundKeyCode.Name or ""
+                    updateText()
+                end
 
                 if keyBoxInst then
                     keyBoxInst.Size = UDim2.new(0, 60, 0, 31)
@@ -2633,41 +2669,31 @@ function SyshubLib:CreateWindow(config)
                 trackConn(UserInputService.InputBegan:Connect(function(input, gp)
                     if isBinding and input.UserInputType == Enum.UserInputType.Keyboard then
                         if input.KeyCode == Enum.KeyCode.Backspace or input.KeyCode == Enum.KeyCode.Escape then
-                            boundKeyCode = nil
+                            applyKey(nil)
                         else
-                            boundKeyCode = input.KeyCode
+                            applyKey(input.KeyCode)
                         end
                         isBinding = false
                         if keyBoxInst then
                             keyBoxInst:ReleaseFocus()
-                            updateText()
                         end
-                        window.Flags[name] = boundKeyCode and boundKeyCode.Name or nil
                         return
                     end
 
                     if gp then return end
                     if boundKeyCode and input.KeyCode == boundKeyCode then
-                        callback(boundKeyCode)
+                        pcall(function() callback(boundKeyCode) end)
                     end
                 end))
 
                 local keybindObj = {
                     Set = function(self, kc)
                         if kc == nil then kc = self end
-                        if typeof(kc) == "EnumItem" then
-                            boundKeyCode = kc
-                        elseif type(kc) == "string" and kc ~= "" then
-                            pcall(function() boundKeyCode = Enum.KeyCode[kc] end)
-                        elseif kc == nil or kc == "" then
-                            boundKeyCode = nil
-                        end
-                        window.Flags[name] = boundKeyCode and boundKeyCode.Name or nil
-                        updateText()
+                        applyKey(kc)
                     end,
                     SetValue = function(self, kc)
                         if kc == nil then kc = self end
-                        keybindObj.Set(kc)
+                        applyKey(kc)
                     end,
                     Get = function(...)
                         return boundKeyCode and boundKeyCode.Name or ""
