@@ -2005,9 +2005,28 @@ function SyshubLib:CreateWindow(config)
                     end
                 end
 
-                local jsonStr = HttpService:JSONEncode(data)
+                -- Sanitize Data
+                for k, v in pairs(data) do
+                    if typeof(v) == "EnumItem" then
+                        data[k] = v.Name
+                    elseif type(v) ~= "string" and type(v) ~= "number" and type(v) ~= "boolean" and type(v) ~= "table" then
+                        data[k] = tostring(v)
+                    end
+                end
+
+                local sEnc, jsonStr = pcall(function() return HttpService:JSONEncode(data) end)
+                if not sEnc or not jsonStr then
+                    warn("[Syshub] JSONEncode error: " .. tostring(jsonStr))
+                    return
+                end
+
                 if type(writefile) == "function" then
-                    writefile(BaseFolder .. configName .. ".json", jsonStr)
+                    local sWrite, wErr = pcall(function()
+                        writefile(BaseFolder .. configName .. ".json", jsonStr)
+                    end)
+                    if not sWrite then
+                        warn("[Syshub] Writefile error: " .. tostring(wErr))
+                    end
                 end
                 window.SavedConfigs = window.SavedConfigs or {}
                 window.SavedConfigs[configName] = data
@@ -2634,24 +2653,26 @@ function SyshubLib:CreateWindow(config)
                 end))
 
                 local keybindObj = {
-                    Set = function(kc)
+                    Set = function(self, kc)
+                        if kc == nil then kc = self end
                         if typeof(kc) == "EnumItem" then
                             boundKeyCode = kc
-                        elseif type(kc) == "string" then
+                        elseif type(kc) == "string" and kc ~= "" then
                             pcall(function() boundKeyCode = Enum.KeyCode[kc] end)
+                        elseif kc == nil or kc == "" then
+                            boundKeyCode = nil
                         end
+                        window.Flags[name] = boundKeyCode and boundKeyCode.Name or nil
                         updateText()
                     end,
                     SetValue = function(self, kc)
-                        if self ~= keybindObj and kc == nil then kc = self end
-                        if typeof(kc) == "EnumItem" then
-                            boundKeyCode = kc
-                        elseif type(kc) == "string" then
-                            pcall(function() boundKeyCode = Enum.KeyCode[kc] end)
-                        end
-                        updateText()
+                        if kc == nil then kc = self end
+                        keybindObj.Set(kc)
                     end,
-                    Get = function() return boundKeyCode end,
+                    Get = function(...)
+                        return boundKeyCode and boundKeyCode.Name or ""
+                    end,
+                    Instance = kbInst,
                 }
                 window.Elements[name] = keybindObj
                 return keybindObj
@@ -2956,23 +2977,16 @@ function SyshubLib:CreateWindow(config)
                     end)
 
                     sideToggleObj = {
-                        Set = function(...)
-                            local args = {...}
-                            local s = args[1]
-                            if s == sideToggleObj then s = args[2] end
+                        Set = function(self, s)
+                            if s == nil then s = self end
                             tState = not not s
                             window.Flags[name .. "_Toggle"] = tState
                             updateSideT(true)
                             pcall(function() toggleCallback(tState) end)
                         end,
-                        SetValue = function(...)
-                            local args = {...}
-                            local s = args[1]
-                            if s == sideToggleObj then s = args[2] end
-                            tState = not not s
-                            window.Flags[name .. "_Toggle"] = tState
-                            updateSideT(true)
-                            pcall(function() toggleCallback(tState) end)
+                        SetValue = function(self, s)
+                            if s == nil then s = self end
+                            sideToggleObj.Set(s)
                         end,
                         Get = function(...)
                             return tState
@@ -3139,22 +3153,16 @@ function SyshubLib:CreateWindow(config)
                 end
 
                 local dropObj = {
-                    Set = function(...)
-                        local args = {...}
-                        local opt = args[1]
-                        if opt == dropObj then opt = args[2] end
+                    Set = function(self, opt)
+                        if opt == nil then opt = self end
                         applyOption(opt)
                     end,
-                    SetValue = function(...)
-                        local args = {...}
-                        local opt = args[1]
-                        if opt == dropObj then opt = args[2] end
+                    SetValue = function(self, opt)
+                        if opt == nil then opt = self end
                         applyOption(opt)
                     end,
-                    Select = function(...)
-                        local args = {...}
-                        local opt = args[1]
-                        if opt == dropObj then opt = args[2] end
+                    Select = function(self, opt)
+                        if opt == nil then opt = self end
                         applyOption(opt)
                     end,
                     Refresh = function(newOpts)
@@ -3164,7 +3172,8 @@ function SyshubLib:CreateWindow(config)
                     Get = function(...)
                         return currentVal
                     end,
-                    SetToggle = function(s)
+                    SetToggle = function(self, s)
+                        if s == nil then s = self end
                         if not hasToggle or not sideToggleObj then return end
                         sideToggleObj.Set(s)
                     end,
@@ -3296,16 +3305,12 @@ function SyshubLib:CreateWindow(config)
                 end
 
                 local tboxObj = {
-                    Set = function(...)
-                        local args = {...}
-                        local val = args[1]
-                        if val == tboxObj then val = args[2] end
+                    Set = function(self, val)
+                        if val == nil then val = self end
                         applyTextVal(val)
                     end,
-                    SetValue = function(...)
-                        local args = {...}
-                        local val = args[1]
-                        if val == tboxObj then val = args[2] end
+                    SetValue = function(self, val)
+                        if val == nil then val = self end
                         if type(val) == "table" then
                             if val.Value ~= nil then applyTextVal(val.Value) end
                             if val.Enabled ~= nil and sideToggle and hasToggle then
@@ -3321,7 +3326,8 @@ function SyshubLib:CreateWindow(config)
                     Get = function(...)
                         return (inputBox and inputBox.Text) or currentVal
                     end,
-                    SetToggle = function(s)
+                    SetToggle = function(self, s)
+                        if s == nil then s = self end
                         if not sideToggle or not hasToggle then return end
                         toggleState = not not s
                         window.Flags[name .. "_Toggle"] = toggleState
@@ -3337,16 +3343,12 @@ function SyshubLib:CreateWindow(config)
 
                 if hasToggle and sideToggle then
                     local sideToggleObj = {
-                        Set = function(...)
-                            local args = {...}
-                            local s = args[1]
-                            if s == sideToggleObj then s = args[2] end
+                        Set = function(self, s)
+                            if s == nil then s = self end
                             tboxObj.SetToggle(s)
                         end,
-                        SetValue = function(...)
-                            local args = {...}
-                            local s = args[1]
-                            if s == sideToggleObj then s = args[2] end
+                        SetValue = function(self, s)
+                            if s == nil then s = self end
                             tboxObj.SetToggle(s)
                         end,
                         Get = function(...)
@@ -3457,16 +3459,12 @@ function SyshubLib:CreateWindow(config)
                 end
 
                 local webhookObj = {
-                    Set = function(...)
-                        local args = {...}
-                        local val = args[1]
-                        if val == webhookObj then val = args[2] end
+                    Set = function(self, val)
+                        if val == nil then val = self end
                         applyWebhookUrl(val)
                     end,
-                    SetValue = function(...)
-                        local args = {...}
-                        local val = args[1]
-                        if val == webhookObj then val = args[2] end
+                    SetValue = function(self, val)
+                        if val == nil then val = self end
                         if type(val) == "table" then
                             if val.Url ~= nil then applyWebhookUrl(val.Url) end
                             if val.Enabled ~= nil and sideToggle and hasToggle then
@@ -3482,7 +3480,8 @@ function SyshubLib:CreateWindow(config)
                     Get = function(...)
                         return (inputBox and inputBox.Text) or currentVal
                     end,
-                    SetToggle = function(s)
+                    SetToggle = function(self, s)
+                        if s == nil then s = self end
                         if not sideToggle or not hasToggle then return end
                         toggleState = not not s
                         window.Flags[name .. "_Toggle"] = toggleState
@@ -3498,16 +3497,12 @@ function SyshubLib:CreateWindow(config)
 
                 if hasToggle and sideToggle then
                     local sideToggleObj = {
-                        Set = function(...)
-                            local args = {...}
-                            local s = args[1]
-                            if s == sideToggleObj then s = args[2] end
+                        Set = function(self, s)
+                            if s == nil then s = self end
                             webhookObj.SetToggle(s)
                         end,
-                        SetValue = function(...)
-                            local args = {...}
-                            local s = args[1]
-                            if s == sideToggleObj then s = args[2] end
+                        SetValue = function(self, s)
+                            if s == nil then s = self end
                             webhookObj.SetToggle(s)
                         end,
                         Get = function(...)
