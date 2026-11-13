@@ -1415,15 +1415,15 @@ function SyshubLib:CreateWindow(config)
             fpsBoostConnection = nil
         end
 
-        -- Turn Off Toggles
+        -- CleanToggles
         for _, element in pairs(window.Elements) do
-            if type(element) == "table" and type(element.Get) == "function" and type(element.Set) == "function" then
-                pcall(function()
+            pcall(function()
+                if type(element) == "table" and type(element.Get) == "function" and type(element.Set) == "function" then
                     if element.Get() == true then
                         element.Set(false)
                     end
-                end)
-            end
+                end
+            end)
         end
 
         -- Disconnect Listeners
@@ -1892,14 +1892,21 @@ function SyshubLib:CreateWindow(config)
                 for id, element in pairs(window.Elements) do
                     if type(element) == "table" then
                         local val = nil
-                        if element.CurrentOption ~= nil then val = element.CurrentOption
-                        elseif element.Value ~= nil then val = element.Value 
-                        elseif element.CurrentValue ~= nil then val = element.CurrentValue 
-                        elseif element.State ~= nil then val = element.State
-                        elseif element.Selected ~= nil then val = element.Selected
-                        elseif type(element.Get) == "function" then
-                            pcall(function() val = element:Get() end)
-                        end
+                        pcall(function()
+                            if type(element.Get) == "function" then
+                                val = element:Get()
+                            elseif element.CurrentOption ~= nil then
+                                val = element.CurrentOption
+                            elseif element.Value ~= nil then
+                                val = element.Value 
+                            elseif element.CurrentValue ~= nil then
+                                val = element.CurrentValue 
+                            elseif element.State ~= nil then
+                                val = element.State
+                            elseif element.Selected ~= nil then
+                                val = element.Selected
+                            end
+                        end)
 
                         if val == nil and window.Flags and window.Flags[id] ~= nil then
                             val = window.Flags[id]
@@ -3224,9 +3231,16 @@ function SyshubLib:CreateWindow(config)
                     Button = actionBtn,
                 }
                 setmetatable(btnObj, {
-                    __index = btnInst
+                    __index = function(t, k)
+                        local s, v = pcall(function() return btnInst[k] end)
+                        if s then return v end
+                        return nil
+                    end,
+                    __newindex = function(t, k, v)
+                        local s = pcall(function() btnInst[k] = v end)
+                        if not s then rawset(t, k, v) end
+                    end
                 })
-                window.Elements[name] = btnObj
                 return btnObj
             end
 
