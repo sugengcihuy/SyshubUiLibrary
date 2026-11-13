@@ -132,99 +132,209 @@ SyshubLib.Icons.Assets = SyshubLib.Icons.Tabs
 
 -- DropScrollFrame
 function SyshubLib.BuildDropScroll()
-    local dropScroll = Instance.new("ScrollingFrame")
-    dropScroll.Name = "DropScrollFrame"
-    dropScroll.AutomaticCanvasSize = E_AS_Y
-    dropScroll.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    dropScroll.BackgroundTransparency = 0.15
-    dropScroll.BorderSizePixel = 0
-    dropScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-    dropScroll.ScrollBarImageColor3 = Color3.fromRGB(85, 255, 0)
-    dropScroll.ScrollBarImageTransparency = 0.2
-    dropScroll.ScrollBarThickness = 3
-    dropScroll.ScrollingDirection = E_SD_Y
-    dropScroll.Size = UDim2.new(0, 222, 0, 100)
-    dropScroll.ZIndex = 5000
-    dropScroll.ClipsDescendants = true
+    local bg = Instance.new("Frame")
+    bg.Name = "ScrollingDropdownFrameBg"
+    bg.BackgroundColor3 = C_White
+    bg.BackgroundTransparency = 1
+    bg.BorderSizePixel = 0
+    bg.Position = UDim2.new(0, 0, 0, 0)
+    bg.Size = UDim2.new(0, 222, 0, 140)
+    bg.ZIndex = 5000
 
-    local corner = Instance.new("UICorner")
-    corner.Name = "UICorner"
-    corner.CornerRadius = UDim.new(0, 5)
-    corner.Parent = dropScroll
+    local searchbox = Instance.new("TextBox")
+    searchbox.Name = "Searchbox"
+    searchbox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    searchbox.BackgroundTransparency = 0.3
+    searchbox.BorderSizePixel = 0
+    searchbox.FontFace = F_SourceSans
+    searchbox.PlaceholderText = "Search...."
+    searchbox.Position = UDim2.new(0, 0, 0, 0)
+    searchbox.Size = UDim2.new(1, 0, 0, 25)
+    searchbox.Text = ""
+    searchbox.TextColor3 = C_White
+    searchbox.TextScaled = true
+    searchbox.TextSize = 14
+    searchbox.TextWrapped = true
+    searchbox.TextXAlignment = E_TXA_Left
+    searchbox.ZIndex = 5002
+    searchbox.Parent = bg
 
-    local outerStroke = Instance.new("UIStroke")
-    outerStroke.Name = "UIStrokeOuter"
-    outerStroke.ApplyStrokeMode = E_ASM_Context
-    outerStroke.BorderStrokePosition = E_BSP_Outer
-    outerStroke.Color = C_Black
-    outerStroke.LineJoinMode = E_LJM_Round
-    outerStroke.StrokeSizingMode = E_SSM_Fixed
-    outerStroke.Thickness = 1.5
-    outerStroke.Transparency = 0
-    outerStroke.ZIndex = 1
-    outerStroke.Parent = dropScroll
+    local searchCorner = Instance.new("UICorner")
+    searchCorner.Name = "UICorner"
+    searchCorner.CornerRadius = UDim.new(1, 0)
+    searchCorner.Parent = searchbox
 
-    local innerStroke = Instance.new("UIStroke")
-    innerStroke.Name = "UIStrokeInner"
-    innerStroke.ApplyStrokeMode = E_ASM_Context
-    innerStroke.BorderStrokePosition = E_BSP_Inner
-    innerStroke.Color = Color3.fromRGB(70, 70, 70)
-    innerStroke.LineJoinMode = E_LJM_Round
-    innerStroke.StrokeSizingMode = E_SSM_Fixed
-    innerStroke.Thickness = 1
-    innerStroke.Transparency = 0
-    innerStroke.ZIndex = 1
-    innerStroke.Parent = dropScroll
+    local searchIcon = Instance.new("ImageLabel")
+    searchIcon.Name = "ImageLabel"
+    searchIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    searchIcon.BackgroundColor3 = C_White
+    searchIcon.BackgroundTransparency = 1
+    searchIcon.BorderSizePixel = 0
+    searchIcon.Image = "rbxassetid://2804603863"
+    searchIcon.Position = UDim2.new(1, -16, 0.5, 0)
+    searchIcon.Rotation = 90
+    searchIcon.Size = UDim2.new(0, 15, 0, 14)
+    searchIcon.ZIndex = 5003
+    searchIcon.Parent = searchbox
+
+    local searchInnerStroke = Instance.new("UIStroke")
+    searchInnerStroke.Name = "UIStrokeInner"
+    searchInnerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    searchInnerStroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+    searchInnerStroke.Color = Color3.fromRGB(98, 98, 98)
+    searchInnerStroke.Thickness = 1
+    searchInnerStroke.Transparency = 0.6
+    searchInnerStroke.ZIndex = 5003
+    searchInnerStroke.Parent = searchbox
+
+    local searchPadding = Instance.new("UIPadding")
+    searchPadding.Name = "UIPadding"
+    searchPadding.PaddingBottom = UDim.new(0, 5)
+    searchPadding.PaddingLeft = UDim.new(0, 8)
+    searchPadding.PaddingRight = UDim.new(0, 30)
+    searchPadding.PaddingTop = UDim.new(0, 5)
+    searchPadding.Parent = searchbox
+
+    local searchOuterStroke = Instance.new("UIStroke")
+    searchOuterStroke.Name = "UIStrokeOuter"
+    searchOuterStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    searchOuterStroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
+    searchOuterStroke.Color = C_Black
+    searchOuterStroke.Thickness = 1
+    searchOuterStroke.Transparency = 0
+    searchOuterStroke.ZIndex = 5003
+    searchOuterStroke.Parent = searchbox
+
+    local scroll = Instance.new("ScrollingFrame")
+    scroll.Name = "ScrollingDropdownFrame"
+    scroll.Active = true
+    scroll.AutomaticCanvasSize = E_AS_Y
+    scroll.BackgroundColor3 = Color3.fromRGB(58, 58, 58)
+    scroll.BackgroundTransparency = 0.5
+    scroll.BorderSizePixel = 0
+    scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    scroll.Position = UDim2.new(0, 0, 0, 28)
+    scroll.ScrollBarImageColor3 = C_Black
+    scroll.ScrollBarThickness = 1
+    scroll.ScrollingDirection = E_SD_Y
+    scroll.Size = UDim2.new(1, 0, 0, 106)
+    scroll.ZIndex = 5001
+    scroll.ClipsDescendants = true
+    scroll.Parent = bg
+
+    local scrollCorner = Instance.new("UICorner")
+    scrollCorner.Name = "UICorner"
+    scrollCorner.CornerRadius = UDim.new(0, 3)
+    scrollCorner.Parent = scroll
+
+    local scrollInnerStroke = Instance.new("UIStroke")
+    scrollInnerStroke.Name = "UIStrokeInner"
+    scrollInnerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+    scrollInnerStroke.BorderStrokePosition = Enum.BorderStrokePosition.Inner
+    scrollInnerStroke.Color = Color3.fromRGB(76, 76, 76)
+    scrollInnerStroke.Thickness = 1.5
+    scrollInnerStroke.ZIndex = 5002
+    scrollInnerStroke.Parent = scroll
+
+    local scrollOuterStroke = Instance.new("UIStroke")
+    scrollOuterStroke.Name = "UIStrokeOuter"
+    scrollOuterStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+    scrollOuterStroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
+    scrollOuterStroke.Color = C_Black
+    scrollOuterStroke.Thickness = 1.5
+    scrollOuterStroke.ZIndex = 5002
+    scrollOuterStroke.Parent = scroll
 
     local listLayout = Instance.new("UIListLayout")
     listLayout.Name = "UIListLayout"
-    listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    listLayout.Padding = UDim.new(0, 4)
-    listLayout.SortOrder = E_SO_Layout
-    listLayout.Parent = dropScroll
+    listLayout.Padding = UDim.new(0, 5)
+    listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    listLayout.Parent = scroll
 
-    local padding = Instance.new("UIPadding")
-    padding.Name = "UIPadding"
-    padding.PaddingBottom = UDim.new(0, 4)
-    padding.PaddingLeft = UDim.new(0, 4)
-    padding.PaddingRight = UDim.new(0, 4)
-    padding.PaddingTop = UDim.new(0, 4)
-    padding.Parent = dropScroll
+    local scrollPadding = Instance.new("UIPadding")
+    scrollPadding.Name = "UIPadding"
+    scrollPadding.PaddingBottom = UDim.new(0, 5)
+    scrollPadding.PaddingLeft = UDim.new(0, 5)
+    scrollPadding.PaddingRight = UDim.new(0, 5)
+    scrollPadding.PaddingTop = UDim.new(0, 5)
+    scrollPadding.Parent = scroll
 
-    local opt = Instance.new("TextButton")
-    opt.Name = "OptionTemplate"
-    opt.BackgroundColor3 = Color3.fromRGB(48, 48, 48)
-    opt.BackgroundTransparency = 0.3
-    opt.FontFace = F_Gotham
-    opt.LayoutOrder = 1
-    opt.Size = UDim2.new(1, -4, 0, 26)
-    opt.Text = "Option 1"
-    opt.TextColor3 = Color3.fromRGB(240, 240, 240)
-    opt.TextSize = 13
-    opt.TextStrokeTransparency = 0
-    opt.TextWrapped = true
-    opt.ZIndex = 5005
-    opt.Visible = false
-    opt.Parent = dropScroll
+    local optTemplate = Instance.new("ImageButton")
+    optTemplate.Name = "TemplateOption"
+    optTemplate.BackgroundColor3 = Color3.fromRGB(58, 58, 58)
+    optTemplate.BorderSizePixel = 0
+    optTemplate.Size = UDim2.new(1, 0, 0, 28)
+    optTemplate.ZIndex = 5003
+    optTemplate.Visible = false
+    optTemplate.Parent = scroll
 
     local optCorner = Instance.new("UICorner")
     optCorner.Name = "UICorner"
-    optCorner.CornerRadius = UDim.new(0, 4)
-    optCorner.Parent = opt
+    optCorner.CornerRadius = UDim.new(0, 3)
+    optCorner.Parent = optTemplate
 
     local optStroke = Instance.new("UIStroke")
     optStroke.Name = "UIStroke"
-    optStroke.ApplyStrokeMode = E_ASM_Border
-    optStroke.BorderStrokePosition = E_BSP_Outer
+    optStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+    optStroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
     optStroke.Color = C_Black
-    optStroke.LineJoinMode = E_LJM_Round
-    optStroke.StrokeSizingMode = E_SSM_Fixed
-    optStroke.Thickness = 1
-    optStroke.Transparency = 0
-    optStroke.ZIndex = 1
-    optStroke.Parent = opt
+    optStroke.Thickness = 1.5
+    optStroke.ZIndex = 5004
+    optStroke.Parent = optTemplate
 
-    return dropScroll
+    local optTitle = Instance.new("TextLabel")
+    optTitle.Name = "TitleOption"
+    optTitle.BackgroundColor3 = C_White
+    optTitle.BackgroundTransparency = 1
+    optTitle.BorderSizePixel = 0
+    optTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    optTitle.Position = UDim2.new(0, 8, 0.08, 0)
+    optTitle.Size = UDim2.new(1, -30, 0, 22)
+    optTitle.Text = "Title Option"
+    optTitle.TextColor3 = C_White
+    optTitle.TextScaled = true
+    optTitle.TextSize = 14
+    optTitle.TextWrapped = true
+    optTitle.TextXAlignment = Enum.TextXAlignment.Left
+    optTitle.ZIndex = 5005
+    optTitle.Parent = optTemplate
+
+    local optTitleStroke = Instance.new("UIStroke")
+    optTitleStroke.Name = "UIStroke"
+    optTitleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+    optTitleStroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
+    optTitleStroke.Color = C_Black
+    optTitleStroke.Thickness = 2
+    optTitleStroke.ZIndex = 5006
+    optTitleStroke.Parent = optTitle
+
+    local optGradient = Instance.new("UIGradient")
+    optGradient.Name = "UIGradient"
+    optGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, C_White),
+        ColorSequenceKeypoint.new(0.53, C_White),
+        ColorSequenceKeypoint.new(0.57, Color3.fromRGB(202, 202, 202)),
+        ColorSequenceKeypoint.new(1, C_White)
+    })
+    optGradient.Rotation = 90
+    optGradient.Parent = optTitle
+
+    local indicator = Instance.new("Frame")
+    indicator.Name = "Indicator"
+    indicator.BackgroundColor3 = C_White
+    indicator.BorderSizePixel = 0
+    indicator.AnchorPoint = Vector2.new(1, 0.5)
+    indicator.Position = UDim2.new(1, -8, 0.5, 0)
+    indicator.Size = UDim2.new(0, 10, 0, 10)
+    indicator.ZIndex = 5005
+    indicator.Parent = optTemplate
+
+    local indCorner = Instance.new("UICorner")
+    indCorner.Name = "UICorner"
+    indCorner.CornerRadius = UDim.new(1, 0)
+    indCorner.Parent = indicator
+
+    return bg
 end
 
 -- Main Ui
@@ -1291,7 +1401,7 @@ c(328, "Frame", 311, { Name = "DropHolder", BackgroundColor3 = Color3.fromRGB(58
 c(329, "UICorner", 328, { Name = "UICorner", CornerRadius = UDim.new(0.10000000149012, 0) })
 c(330, "UIStroke", 328, { Name = "UIStroke", ApplyStrokeMode = E_ASM_Context, BorderOffset = UDim.new(0, 0), BorderStrokePosition = E_BSP_Inner, Color = Color3.fromRGB(76, 76, 76), Enabled = true, LineJoinMode = E_LJM_Round, StrokeSizingMode = E_SSM_Fixed, Thickness = 1.5, Transparency = 0, ZIndex = 1 })
 c(331, "UIStroke", 328, { Name = "UIStroke", ApplyStrokeMode = E_ASM_Context, BorderOffset = UDim.new(0, 0), BorderStrokePosition = E_BSP_Outer, Color = C_Black, Enabled = true, LineJoinMode = E_LJM_Round, StrokeSizingMode = E_SSM_Fixed, Thickness = 1.5, Transparency = 0, ZIndex = 1 })
-c(332, "TextLabel", 328, { Name = "IndicatorText", AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = C_White, BackgroundTransparency = 1, BorderColor3 = C_Black, BorderSizePixel = 0, FontFace = F_GothamHeavy, LayoutOrder = 1, Position = UDim2.new(0.49497446417809, 0, 0.56326788663864, 0), Size = UDim2.new(0.59985160827637, 0, 0.73227423429489, 0), Text = "Slebew", TextColor3 = Color3.fromRGB(251, 251, 251), TextScaled = true, TextSize = 14, TextWrapped = true, ZIndex = 25 })
+c(332, "TextLabel", 328, { Name = "IndicatorText", AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = C_White, BackgroundTransparency = 1, BorderColor3 = C_Black, BorderSizePixel = 0, FontFace = F_GothamHeavy, LayoutOrder = 1, Position = UDim2.new(0.44992944598198, 0, 0.43423560261726, 0), Size = UDim2.new(0.73498672246933, 0, 0.73227423429489, 0), Text = "Select...", TextColor3 = Color3.fromRGB(251, 251, 251), TextSize = 14, TextTruncate = Enum.TextTruncate.AtEnd, TextWrapped = true, ZIndex = 25 })
 c(333, "UIStroke", 332, { Name = "UIStroke", ApplyStrokeMode = E_ASM_Context, BorderOffset = UDim.new(0, 0), BorderStrokePosition = E_BSP_Outer, Color = C_Black, Enabled = true, LineJoinMode = E_LJM_Bevel, StrokeSizingMode = E_SSM_Scaled, Thickness = 0.11999999731779, Transparency = 0, ZIndex = 1 })
 c(334, "UIGradient", 332, { Name = "UIGradient", Color = ColorSequence.new({ColorSequenceKeypoint.new(0, C_White), ColorSequenceKeypoint.new(0.5319516658783, C_White), ColorSequenceKeypoint.new(0.56649392843246, Color3.fromRGB(202, 202, 202)), ColorSequenceKeypoint.new(1, C_White)}), Rotation = 90 })
 c(335, "ImageButton", 328, { Name = "Hitbox", BackgroundColor3 = C_White, BackgroundTransparency = 1, BorderColor3 = C_Black, BorderSizePixel = 0, Position = UDim2.new(-1.3685013300346e-07, 0, 0, 0), Size = UDim2.new(0, 222, 0, 31) })
@@ -3314,10 +3424,12 @@ function SyshubLib:CreateWindow(config)
                 dropdownConfig = dropdownConfig or {}
                 local name = dropdownConfig.Name or "Dropdown"
                 local options = dropdownConfig.Options or {}
-                local defaultVal = dropdownConfig.Default or options[1] or ""
+                local defaultVal = dropdownConfig.Default
                 local callback = dropdownConfig.Callback or function() end
                 local hasToggle = dropdownConfig.HasToggle or false
                 local toggleCallback = dropdownConfig.ToggleCallback or function() end
+                local isMulti = dropdownConfig.Multi or false
+                local hasSearch = dropdownConfig.Search or false
 
                 local dropInst = templateDropdown:Clone()
                 dropInst.Name = "Dropdown_" .. name
@@ -3412,25 +3524,95 @@ function SyshubLib:CreateWindow(config)
                     window.Elements[name .. "_Toggle"] = sideToggleObj
                 end
 
-                -- DropScrollFrame
+                -- DropScroll Frame
                 local dropScroll = templateDropScroll:Clone()
                 dropScroll.Name = "DropScroll_" .. name
                 dropScroll.Visible = false
                 dropScroll.ZIndex = 5000
                 dropScroll.Parent = dropOverlay
 
-                local optionTemplate = dropScroll:FindFirstChild("OptionTemplate")
+                local searchBox = dropScroll:FindFirstChild("Searchbox")
+                local scrollFrame = dropScroll:FindFirstChild("ScrollingDropdownFrame")
+                local optionTemplate = scrollFrame and scrollFrame:FindFirstChild("TemplateOption")
                 if optionTemplate then
                     optionTemplate.Visible = false
                 end
 
-                local isOpen = false
-                local currentVal = defaultVal
-                window.Flags[name] = currentVal
-
-                if indicator then
-                    indicator.Text = (currentVal and tostring(currentVal) ~= "") and tostring(currentVal) or "Select..."
+                if searchBox then
+                    searchBox.Visible = hasSearch
+                    if not hasSearch and scrollFrame then
+                        scrollFrame.Position = UDim2.new(0, 0, 0, 0)
+                        scrollFrame.Size = UDim2.new(1, 0, 1, 0)
+                    end
                 end
+
+                local isOpen = false
+                local currentVal = (not isMulti) and (defaultVal or options[1] or "") or nil
+                local selectedMap = {}
+
+                if isMulti then
+                    if type(defaultVal) == "table" then
+                        for _, item in ipairs(defaultVal) do
+                            selectedMap[tostring(item)] = true
+                        end
+                    elseif defaultVal and tostring(defaultVal) ~= "" then
+                        selectedMap[tostring(defaultVal)] = true
+                    end
+                end
+
+                local function getSelectedList()
+                    local res = {}
+                    for _, opt in ipairs(options) do
+                        if selectedMap[tostring(opt)] then
+                            table.insert(res, tostring(opt))
+                        end
+                    end
+                    return res
+                end
+
+                local function updateIndicator()
+                    if not indicator then return end
+                    if isMulti then
+                        local list = getSelectedList()
+                        if #list == 0 then
+                            indicator.Text = "None"
+                        else
+                            indicator.Text = table.concat(list, ", ")
+                        end
+                    else
+                        indicator.Text = (currentVal and tostring(currentVal) ~= "") and tostring(currentVal) or "Select..."
+                    end
+                end
+
+                local function updateVisuals()
+                    if not scrollFrame then return end
+                    for _, btn in ipairs(scrollFrame:GetChildren()) do
+                        if btn:IsA("GuiButton") and btn.Name:sub(1, 7) == "Option_" then
+                            local optName = btn:GetAttribute("OptionName") or btn.Name:sub(8)
+                            local ind = btn:FindFirstChild("Indicator", true)
+                            if ind then
+                                local isSelected = false
+                                if isMulti then
+                                    isSelected = not not selectedMap[tostring(optName)]
+                                else
+                                    isSelected = (tostring(optName) == tostring(currentVal))
+                                end
+                                if isSelected then
+                                    ind.BackgroundColor3 = Color3.fromRGB(0, 255, 120)
+                                else
+                                    ind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                                end
+                            end
+                        end
+                    end
+                end
+
+                if isMulti then
+                    window.Flags[name] = getSelectedList()
+                else
+                    window.Flags[name] = currentVal
+                end
+                updateIndicator()
 
                 local outsideClickConn = nil
                 local function closeDropdown()
@@ -3458,10 +3640,24 @@ function SyshubLib:CreateWindow(config)
                     local relX = holderPos.X - overlayPos.X
                     local relY = (holderPos.Y - overlayPos.Y) + dropHolder.AbsoluteSize.Y + 1
                     local numOpts = #options
-                    local targetH = math.clamp(numOpts * 30 + 8, 38, 120)
+                    local targetH = 140
+                    if hasSearch then
+                        targetH = math.clamp(numOpts * 33 + 38, 70, 140)
+                    else
+                        targetH = math.clamp(numOpts * 33 + 10, 38, 120)
+                    end
 
                     dropScroll.Position = UDim2.new(0, relX, 0, relY)
                     dropScroll.Size = UDim2.new(0, dropHolder.AbsoluteSize.X, 0, targetH)
+                    if scrollFrame then
+                        if hasSearch then
+                            scrollFrame.Position = UDim2.new(0, 0, 0, 28)
+                            scrollFrame.Size = UDim2.new(1, 0, 0, math.max(10, targetH - 30))
+                        else
+                            scrollFrame.Position = UDim2.new(0, 0, 0, 0)
+                            scrollFrame.Size = UDim2.new(1, 0, 0, targetH)
+                        end
+                    end
                 end
 
                 local function openDropdown()
@@ -3523,7 +3719,8 @@ function SyshubLib:CreateWindow(config)
                 end
 
                 local function populateOptions(optList)
-                    for _, child in ipairs(dropScroll:GetChildren()) do
+                    if not scrollFrame then return end
+                    for _, child in ipairs(scrollFrame:GetChildren()) do
                         if child:IsA("GuiButton") and child ~= optionTemplate then
                             child:Destroy()
                         end
@@ -3532,11 +3729,15 @@ function SyshubLib:CreateWindow(config)
                     for _, opt in ipairs(optList) do
                         local btn = optionTemplate:Clone()
                         btn.Name = "Option_" .. tostring(opt)
-                        btn.Text = tostring(opt)
+                        btn:SetAttribute("OptionName", tostring(opt))
+                        local title = btn:FindFirstChild("TitleOption", true)
+                        if title then
+                            title.Text = tostring(opt)
+                        end
                         btn.Visible = true
                         btn.ZIndex = 5005
                         btn.Active = true
-                        btn.Parent = dropScroll
+                        btn.Parent = scrollFrame
 
                         btn.MouseEnter:Connect(function()
                             TweenService:Create(btn, TweenInfo.new(0.15), { BackgroundTransparency = 0.1 }):Play()
@@ -3546,27 +3747,75 @@ function SyshubLib:CreateWindow(config)
                         end)
 
                         btn.MouseButton1Click:Connect(function()
-                            currentVal = opt
-                            window.Flags[name] = currentVal
-                            if indicator then
-                                indicator.Text = tostring(opt)
+                            if isMulti then
+                                local key = tostring(opt)
+                                selectedMap[key] = not selectedMap[key]
+                                if not selectedMap[key] then
+                                    selectedMap[key] = nil
+                                end
+                                updateVisuals()
+                                updateIndicator()
+                                local res = getSelectedList()
+                                window.Flags[name] = res
+                                pcall(function() callback(res) end)
+                            else
+                                currentVal = opt
+                                window.Flags[name] = currentVal
+                                updateVisuals()
+                                if indicator then
+                                    indicator.Text = tostring(opt)
+                                end
+                                closeDropdown()
+                                pcall(function() callback(opt) end)
                             end
-                            closeDropdown()
-                            callback(opt)
                         end)
                     end
+                    updateVisuals()
                 end
 
                 populateOptions(options)
 
+                -- Search Filter
+                if searchBox then
+                    searchBox:GetPropertyChangedSignal("Text"):Connect(function()
+                        local q = string.lower(searchBox.Text)
+                        if not scrollFrame then return end
+                        for _, btn in ipairs(scrollFrame:GetChildren()) do
+                            if btn:IsA("GuiButton") and btn.Name:sub(1, 7) == "Option_" then
+                                local optName = btn:GetAttribute("OptionName") or btn.Name:sub(8)
+                                if q == "" or string.find(string.lower(tostring(optName)), q, 1, true) then
+                                    btn.Visible = true
+                                else
+                                    btn.Visible = false
+                                end
+                            end
+                        end
+                    end)
+                end
+
                 -- Dropdown Functions
-                local function applyOption(opt)
-                    currentVal = opt
-                    window.Flags[name] = currentVal
-                    if indicator then
-                        indicator.Text = (opt and tostring(opt) ~= "") and tostring(opt) or "Select..."
+                local function applyOption(val)
+                    if isMulti then
+                        selectedMap = {}
+                        if type(val) == "table" then
+                            for _, item in ipairs(val) do
+                                selectedMap[tostring(item)] = true
+                            end
+                        elseif val and tostring(val) ~= "" then
+                            selectedMap[tostring(val)] = true
+                        end
+                        updateVisuals()
+                        updateIndicator()
+                        local res = getSelectedList()
+                        window.Flags[name] = res
+                        pcall(function() callback(res) end)
+                    else
+                        currentVal = val
+                        window.Flags[name] = currentVal
+                        updateVisuals()
+                        updateIndicator()
+                        pcall(function() callback(val) end)
                     end
-                    pcall(function() callback(opt) end)
                 end
 
                 local dropObj = {
@@ -3583,11 +3832,16 @@ function SyshubLib:CreateWindow(config)
                         applyOption(opt)
                     end,
                     Refresh = function(newOpts)
-                        options = newOpts
+                        options = newOpts or {}
                         populateOptions(options)
+                        updateIndicator()
                     end,
                     Get = function(...)
-                        return currentVal
+                        if isMulti then
+                            return getSelectedList()
+                        else
+                            return currentVal
+                        end
                     end,
                     SetToggle = function(self, s)
                         if s == nil then s = self end
@@ -4066,21 +4320,25 @@ function SyshubLib:CreateWindow(config)
             end)
 
             -- Searchbox
+            local hasSecSearch = secConfig and (secConfig.Search == true)
             if searchBox then
-                searchBox:GetPropertyChangedSignal("Text"):Connect(function()
-                    local query = string.lower(searchBox.Text)
-                    for _, widget in ipairs(secBody:GetChildren()) do
-                        if widget:IsA("GuiObject") and not widget:IsA("UIPadding") and not widget:IsA("UIListLayout") and not widget:IsA("UIStroke") and not widget:IsA("UICorner") then
-                            if query == "" then
-                                widget.Visible = true
-                            else
-                                local wTitle = widget:FindFirstChild("TitleText", true) or widget:FindFirstChild("Title", true)
-                                local txt = wTitle and string.lower(wTitle.Text) or string.lower(widget.Name)
-                                widget.Visible = string.find(txt, query, 1, true) ~= nil
+                searchBox.Visible = hasSecSearch
+                if hasSecSearch then
+                    searchBox:GetPropertyChangedSignal("Text"):Connect(function()
+                        local query = string.lower(searchBox.Text)
+                        for _, widget in ipairs(secBody:GetChildren()) do
+                            if widget:IsA("GuiObject") and not widget:IsA("UIPadding") and not widget:IsA("UIListLayout") and not widget:IsA("UIStroke") and not widget:IsA("UICorner") then
+                                if query == "" then
+                                    widget.Visible = true
+                                else
+                                    local wTitle = widget:FindFirstChild("TitleText", true) or widget:FindFirstChild("Title", true)
+                                    local txt = wTitle and string.lower(wTitle.Text) or string.lower(widget.Name)
+                                    widget.Visible = string.find(txt, query, 1, true) ~= nil
+                                end
                             end
                         end
-                    end
-                end)
+                    end)
+                end
             end
 
             local secObj = {

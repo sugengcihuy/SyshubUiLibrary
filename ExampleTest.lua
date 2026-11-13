@@ -31,7 +31,7 @@ local tab1 = win:CreateTab({
 })
 
 -- Section 1 di Tab 1
-local sec1 = tab1:CreateSection({ Name = "Main Fiture" })
+local sec1 = tab1:CreateSection({ Name = "Main Fiture", Search = true })
 
 -- Toggle + Keybind
 sec1:AddToggle({
@@ -74,13 +74,26 @@ sec1:AddSliderToggle({
     ToggleCallback = function(s) print("[Syshub] Jump Toggle:", s) end
 })
 
--- Dropdown
+-- Dropdown (Single Select)
 sec1:AddDropdown({
     Name = "Pilih Telur",
     Options = {"Egg Common", "Egg Rare", "Egg Legendary", "Egg Mythic"},
     Default = "Egg Common",
+    Search = false,
     Callback = function(selected)
         print("[Syshub] Telur dipilih:", selected)
+    end
+})
+
+-- Multi Dropdown + Search
+sec1:AddDropdown({
+    Name = "Target Mobs",
+    Options = {"Bandit", "Monkey", "Gorilla", "Pirate", "Boss", "Dragon"},
+    Default = {"Bandit", "Boss"},
+    Multi = true,
+    Search = true,
+    Callback = function(selected)
+        print("[Syshub] Target Mobs:", table.concat(selected, ", "))
     end
 })
 
