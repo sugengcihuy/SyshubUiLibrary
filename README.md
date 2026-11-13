@@ -7,16 +7,6 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/sugengcihuy/SyshubUiLibrary/refs/heads/master/ExampleTest.lua"))()
 ```
 
-## Fitur Unggulan
-- **Performance Monitor:** Built-in FPS & Ping HUD interaktif di tengah atas layar dengan dynamic coloring (hijau, kuning, merah) dan toggle keybind.
-- **Multi-Select Dropdown:** Mendukung pemilihan banyak opsi sekaligus (`Multi = true`) dengan dot indikator hijau/putih dan elipsis rapi (`TextTruncate`).
-- **Dropdown Searchbox:** Pencarian opsi dropdown secara real-time (`Search = true`).
-- **Section Searchbox:** Filter widget interaktif langsung pada header section (`Search = true`).
-- **Smart Config System:** Auto-save dan auto-load seluruh konfigurasi toggle, slider, dropdown (single & multi), textbox, webhook, dan keybind.
-- **Side Toggle Support:** TextBox dan Webhook mendukung switch toggle samping (`HasToggle = true`).
-
----
-
 ## Contoh Penggunaan
 
 ```lua
@@ -213,17 +203,7 @@ local tabAbout = win:CreateTab({
 
 ---
 
-## Fitur Default Settings
-Setiap jendela GUI secara otomatis memiliki fitur internal berikut tanpa perlu instalasi tambahan:
-- **Performance Monitor:** Toggle HUD Ping & FPS di layar dengan shortcut keybind.
-- **FPS Boost:** Memangkas partikel dan grafis berat Roblox agar game lancar.
-- **Save & Load Config:** Simpan dan muat seluruh profil konfigurasi UI ke disk executor.
-- **Menu Keybind:** Shortcut keyboard untuk menyembunyikan dan menampilkan jendela UI (default: `RightControl`).
-- **Unload UI:** Membersihkan seluruh instance dan thread library secara aman.
-
----
-
-## Validasi Key Kustom
+## Cara Pakai Key Sendiri
 
 ```lua
 local win = SyshubLib:CreateWindow({
