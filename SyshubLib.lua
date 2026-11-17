@@ -519,6 +519,218 @@ function SyshubLib.BuildSaveModal(parent)
     return bgFrame, inputBox, confirmBtn, cancelBtn
 end
 
+-- Close Modal
+function SyshubLib.BuildCloseConfirmationModal(parent)
+    local bgFrame = Instance.new("Frame")
+    bgFrame.Name = "ConfirmationCloseBg"
+    bgFrame.Active = true
+    bgFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    bgFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    bgFrame.Size = UDim2.new(0, 230, 0, 140)
+    bgFrame.BackgroundColor3 = C_White
+    bgFrame.BorderSizePixel = 0
+    bgFrame.ZIndex = 10000
+    bgFrame.Visible = false
+
+    local bgCorner = Instance.new("UICorner")
+    bgCorner.CornerRadius = UDim.new(0, 5)
+    bgCorner.Parent = bgFrame
+
+    local bgStrokeOuter = Instance.new("UIStroke")
+    bgStrokeOuter.ApplyStrokeMode = E_ASM_Context
+    bgStrokeOuter.BorderStrokePosition = E_BSP_Outer
+    bgStrokeOuter.Color = C_Black
+    bgStrokeOuter.LineJoinMode = E_LJM_Round
+    bgStrokeOuter.StrokeSizingMode = E_SSM_Fixed
+    bgStrokeOuter.Thickness = 1.5
+    bgStrokeOuter.Parent = bgFrame
+
+    local bgStrokeInner = Instance.new("UIStroke")
+    bgStrokeInner.ApplyStrokeMode = E_ASM_Context
+    bgStrokeInner.BorderStrokePosition = E_BSP_Inner
+    bgStrokeInner.Color = Color3.fromRGB(61, 61, 61)
+    bgStrokeInner.LineJoinMode = E_LJM_Round
+    bgStrokeInner.StrokeSizingMode = E_SSM_Fixed
+    bgStrokeInner.Thickness = 1.5
+    bgStrokeInner.Parent = bgFrame
+
+    local bgGrad = Instance.new("UIGradient")
+    bgGrad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 170, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 127))
+    })
+    bgGrad.Rotation = 90
+    bgGrad.Parent = bgFrame
+
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.Name = "Title"
+    title.BackgroundTransparency = 1
+    title.BorderSizePixel = 0
+    title.FontFace = F_Fredoka
+    title.Position = UDim2.new(0.22091674804688, 0, 0, 0)
+    title.Size = UDim2.new(0, 128, 0, 35)
+    title.Text = "Close Window"
+    title.TextColor3 = C_White
+    title.TextScaled = true
+    title.TextSize = 14
+    title.TextStrokeTransparency = 0
+    title.TextWrapped = true
+    title.ZIndex = 10001
+    title.Parent = bgFrame
+
+    local titleGrad = Instance.new("UIGradient")
+    titleGrad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 170, 0))
+    })
+    titleGrad.Rotation = 90
+    titleGrad.Parent = title
+
+    -- Description
+    local desc = Instance.new("TextLabel")
+    desc.Name = "Description"
+    desc.BackgroundTransparency = 1
+    desc.BorderSizePixel = 0
+    desc.FontFace = F_Fredoka
+    desc.Position = UDim2.new(0.037837948650122, 0, 0.19285714626312, 0)
+    desc.Size = UDim2.new(0, 213, 0, 64)
+    desc.Text = "Do you want to close this window? You Will not be able to open it again"
+    desc.TextColor3 = C_White
+    desc.TextScaled = true
+    desc.TextSize = 14
+    desc.TextStrokeTransparency = 0
+    desc.TextWrapped = true
+    desc.ZIndex = 10001
+    desc.Parent = bgFrame
+
+    local descGrad = Instance.new("UIGradient")
+    descGrad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(0.5319516658783, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(0.56649392843246, Color3.fromRGB(202, 202, 202)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
+    })
+    descGrad.Rotation = 90
+    descGrad.Parent = desc
+
+    -- Cancel Button
+    local cancelBtn = Instance.new("ImageButton")
+    cancelBtn.Name = "Cancelbtn"
+    cancelBtn.BackgroundColor3 = C_White
+    cancelBtn.BorderSizePixel = 0
+    cancelBtn.Position = UDim2.new(0.094359554350376, 0, 0.72194343805313, 0)
+    cancelBtn.Size = UDim2.new(0, 80, 0, 31)
+    cancelBtn.ZIndex = 10001
+    cancelBtn.Parent = bgFrame
+
+    local cancelCorner = Instance.new("UICorner")
+    cancelCorner.CornerRadius = UDim.new(0, 5)
+    cancelCorner.Parent = cancelBtn
+
+    local cancelStroke = Instance.new("UIStroke")
+    cancelStroke.ApplyStrokeMode = E_ASM_Context
+    cancelStroke.BorderStrokePosition = E_BSP_Center
+    cancelStroke.Color = C_Black
+    cancelStroke.LineJoinMode = E_LJM_Round
+    cancelStroke.StrokeSizingMode = E_SSM_Fixed
+    cancelStroke.Thickness = 2
+    cancelStroke.Parent = cancelBtn
+
+    local cancelGrad = Instance.new("UIGradient")
+    cancelGrad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 255, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(212, 255, 0))
+    })
+    cancelGrad.Rotation = 90
+    cancelGrad.Parent = cancelBtn
+
+    local cancelTxt = Instance.new("TextLabel")
+    cancelTxt.Name = "CancelText"
+    cancelTxt.BackgroundTransparency = 1
+    cancelTxt.BorderSizePixel = 0
+    cancelTxt.FontFace = F_Fredoka
+    cancelTxt.Position = UDim2.new(0.11249999701977, 0, 0.096774190664291, 0)
+    cancelTxt.Size = UDim2.new(0, 62, 0, 25)
+    cancelTxt.Text = "Cancel"
+    cancelTxt.TextColor3 = C_White
+    cancelTxt.TextScaled = true
+    cancelTxt.TextSize = 14
+    cancelTxt.TextWrapped = true
+    cancelTxt.ZIndex = 10002
+    cancelTxt.Parent = cancelBtn
+
+    local cancelTxtStroke = Instance.new("UIStroke")
+    cancelTxtStroke.ApplyStrokeMode = E_ASM_Context
+    cancelTxtStroke.BorderStrokePosition = E_BSP_Outer
+    cancelTxtStroke.Color = C_Black
+    cancelTxtStroke.LineJoinMode = E_LJM_Round
+    cancelTxtStroke.StrokeSizingMode = E_SSM_Fixed
+    cancelTxtStroke.Thickness = 2
+    cancelTxtStroke.Parent = cancelTxt
+
+    -- Confirm Button
+    local confirmBtn = Instance.new("ImageButton")
+    confirmBtn.Name = "Confirmbtn"
+    confirmBtn.BackgroundColor3 = C_White
+    confirmBtn.BorderSizePixel = 0
+    confirmBtn.Position = UDim2.new(0.572150349617, 0, 0.72194343805313, 0)
+    confirmBtn.Size = UDim2.new(0, 80, 0, 31)
+    confirmBtn.ZIndex = 10001
+    confirmBtn.Parent = bgFrame
+
+    local confirmCorner = Instance.new("UICorner")
+    confirmCorner.CornerRadius = UDim.new(0, 5)
+    confirmCorner.Parent = confirmBtn
+
+    local confirmStroke = Instance.new("UIStroke")
+    confirmStroke.ApplyStrokeMode = E_ASM_Context
+    confirmStroke.BorderStrokePosition = E_BSP_Center
+    confirmStroke.Color = C_Black
+    confirmStroke.LineJoinMode = E_LJM_Round
+    confirmStroke.StrokeSizingMode = E_SSM_Fixed
+    confirmStroke.Thickness = 2
+    confirmStroke.Parent = confirmBtn
+
+    local confirmGrad = Instance.new("UIGradient")
+    confirmGrad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 149, 0))
+    })
+    confirmGrad.Rotation = 90
+    confirmGrad.Parent = confirmBtn
+
+    local confirmTxt = Instance.new("TextLabel")
+    confirmTxt.Name = "ConfirmText"
+    confirmTxt.BackgroundTransparency = 1
+    confirmTxt.BorderSizePixel = 0
+    confirmTxt.FontFace = F_Fredoka
+    confirmTxt.Position = UDim2.new(0.11249999701977, 0, 0.096774190664291, 0)
+    confirmTxt.Size = UDim2.new(0, 62, 0, 25)
+    confirmTxt.Text = "Confirm"
+    confirmTxt.TextColor3 = C_White
+    confirmTxt.TextScaled = true
+    confirmTxt.TextSize = 14
+    confirmTxt.TextWrapped = true
+    confirmTxt.ZIndex = 10002
+    confirmTxt.Parent = confirmBtn
+
+    local confirmTxtStroke = Instance.new("UIStroke")
+    confirmTxtStroke.ApplyStrokeMode = E_ASM_Context
+    confirmTxtStroke.BorderStrokePosition = E_BSP_Outer
+    confirmTxtStroke.Color = C_Black
+    confirmTxtStroke.LineJoinMode = E_LJM_Round
+    confirmTxtStroke.StrokeSizingMode = E_SSM_Fixed
+    confirmTxtStroke.Thickness = 2
+    confirmTxtStroke.Parent = confirmTxt
+
+    if parent then
+        bgFrame.Parent = parent
+    end
+
+    return bgFrame, confirmBtn, cancelBtn
+end
+
 -- Performance UI
 function SyshubLib.BuildPerformanceUI(parent)
     local frame = Instance.new("Frame")
@@ -1648,6 +1860,9 @@ function SyshubLib:CreateWindow(config)
     -- Save Modal
     local saveModal, saveInputBox, saveConfirmBtn, saveCancelBtn = SyshubLib.BuildSaveModal(root)
 
+    -- Close Modal
+    local closeConfirmModal, closeConfirmBtn, closeCancelBtn = SyshubLib.BuildCloseConfirmationModal(root)
+
     -- Performance UI
     local perfFrame, fpsLabel, pingLabel = SyshubLib.BuildPerformanceUI(root)
 
@@ -1840,8 +2055,18 @@ function SyshubLib:CreateWindow(config)
     makeDraggable(headerFrame, loaderFrame)
     makeDraggable(minOpenCloseBtn, minModeHolder)
     makeDraggable(perfFrame, perfFrame)
+    makeDraggable(closeConfirmModal, closeConfirmModal)
 
-    topCloseBtn.MouseButton1Click:Connect(function()
+    local function requestClose()
+        window:CloseActiveDropdown()
+        closeConfirmModal.Visible = true
+    end
+
+    topCloseBtn.MouseButton1Click:Connect(requestClose)
+    closeCancelBtn.MouseButton1Click:Connect(function()
+        closeConfirmModal.Visible = false
+    end)
+    closeConfirmBtn.MouseButton1Click:Connect(function()
         cleanupAll()
     end)
 
@@ -1879,9 +2104,7 @@ function SyshubLib:CreateWindow(config)
         loaderFrame.Visible = false
         minModeHolder.Visible = false
 
-        loginCloseBtn.MouseButton1Click:Connect(function()
-            cleanupAll()
-        end)
+        loginCloseBtn.MouseButton1Click:Connect(requestClose)
 
         local function verifyKey()
             local entered = keyBox.Text
